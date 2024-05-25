@@ -100,25 +100,14 @@ export default ({ command, mode }) => {
         },
       },
 
-      // <!-- Cloudflare Web Analytics -->
-      process.env.UNI_PLATFORM === 'h5' && {
-        name: 'html-transform',
-        transformIndexHtml(html) {
-          return html.replace(
-            '',
-            `<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cc43be4a545046b586c4c2fd9368d896"}'></script>`,
-          )
-        },
-      },
-
       // 打包分析插件
-      // mode === 'production' &&
-      //   visualizer({
-      //     filename: './node_modules/.cache/visualizer/stats.html',
-      //     open: true,
-      //     gzipSize: true,
-      //     brotliSize: true,
-      //   }),
+      mode === 'production' &&
+        visualizer({
+          filename: './node_modules/.cache/visualizer/stats.html',
+          open: false,
+          gzipSize: true,
+          brotliSize: true,
+        }),
       // 这个图片压缩插件比较耗时，希望仅在生产环境使用
       // TODO: 缓存每次压缩过的图片，已经压缩过的不再压缩
       imagemin(mode === 'production'),
