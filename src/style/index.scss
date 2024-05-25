@@ -1,0 +1,68 @@
+.test {
+  // 可以通过 @apply 多个样式封装整体样式
+  @apply mt-4 ml-4;
+
+  padding-top: 4px;
+  color: red;
+}
+
+// 全局字体引用 DEMO
+// @font-face {
+//   font-family: TiTi;
+//   src: url('./fonts/PangMenZhengDaoBiaoTiTi-1.ttf');
+// }
+
+// .titi {
+//   font-family: TiTi, Arial, sans-serif;
+// }
+
+// 虚拟列表组件样式
+.icc__container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  .icc__content-wrap {
+    flex: 1;
+    .virtual-scroller {
+      /* 开启硬件加速 -webkit-overflow-scrolling: touch; ios高版本自带 */
+      -webkit-overflow-scrolling: touch;
+      /* 禁用回弹效果 */
+      overscroll-behavior: none;
+      height: 100%;
+    }
+  }
+}
+
+/* chat.vue, 样式不生效问题，写在全局解决这个问题 */
+/* #ifdef MP */
+.notice .uni-noticebar {
+  height: 18px;
+  margin: 0;
+}
+/* #endif */
+
+.llm-select .uni-select__input-box {
+  max-width: 100%;
+}
+
+.llm-select .uni-select__selector-item uni-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.progress-box .uni-progress-info {
+  font-size: 14px;
+  color: #888;
+}
+
+/* #ifdef MP */
+.llm-select .uni-select__selector-item text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+/* #endif */

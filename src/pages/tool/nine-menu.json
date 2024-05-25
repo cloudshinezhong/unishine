@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Cloudflare AI",
+    "subTitle": "cloudflare平台提供的免费AI产品",
+    "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714911121/unishine/gfqvanziyh2tznwx9bfg.jpg",
+    "key": "CLOUDFLARE_AI",
+    "name": "CF AI",
+    "menu": [
+      {
+        "name": "文本生成",
+        "key": "chat",
+        "uTitle": "Cloudflare AI模型",
+        "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)，中文建议用千问(qwen)系列",
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+      }
+    ]
+  },
+  //  {
+  //    "title": "Coze AI Bot",
+  //    "subTitle" : "字节海外平台提供的免费AI机器人",
+  //    "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714907847/unishine/ylvlezlkmv0xx7j0prph.png",
+  //    "key": "COZE_AI",
+  //    "name": "COZE",
+  //    "menu" : [
+  //      {
+  //        "name": "文本生成",
+  //        "key": "chat",
+  //        "uTitle": "Coze AI机器人",
+  //        "uDesc": "机器人为字节海外平台提供的AI助手，当前接入的机器人为作者账号下的，后期开放配置，机器人接入的模型是openai旗下的GPT系列",
+  //        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+  //      }
+  //    ]
+  //  },
+  {
+    "title": "Google AI",
+    "subTitle": "谷歌平台提供的免费AI服务",
+    "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714907847/unishine/tzwqty1iwcirpeaswgbr.png",
+    "key": "GOOGLE_AI",
+    "name": "GEMINI",
+    "menu": [
+      {
+        "name": "文本生成",
+        "key": "chat",
+        "uTitle": "Google AI模型",
+        "uDesc": "模型为Google提供的gemini系列(暂不包含图文，后期开放)，该系列暂时免费(每分钟60次请求)，属于较热门的AI系列",
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+      }
+    ]
+  },
+  {
+    "title": "Groq AI",
+    "subTitle": "Groq Cloud平台提供的免费AI",
+    "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1716062931/unishine/eiyigjccq94z1dqe2zlh.jpg",
+    "key": "GROQ_AI",
+    "name": "GROQ",
+    "menu": [
+      {
+        "name": "文本生成",
+        "key": "chat",
+        "uTitle": "Groq AI模型",
+        "uDesc": "模型为Groq提供的llama系列等，该系列暂时免费(每分钟30次请求)，属于较热门的AI系列",
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+      }
+    ]
+  }
+]

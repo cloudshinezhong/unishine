@@ -1,0 +1,74 @@
+/*
+
+Darcula color scheme from the JetBrains family of IDEs
+
+*/
+.h2w-darcula .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em 0;
+}
+
+.h2w-darcula .hljs {
+    color: #bababa;
+}
+
+.h2w-darcula .hljs-strong,
+.h2w-darcula .hljs-emphasis {
+    color: #a8a8a2;
+}
+
+.h2w-darcula .hljs-bullet,
+.h2w-darcula .hljs-quote,
+.h2w-darcula .hljs-link,
+.h2w-darcula .hljs-number,
+.h2w-darcula .hljs-regexp,
+.h2w-darcula.hljs-literal {
+    color: #6896ba;
+}
+
+.h2w-darcula .hljs-code
+.h2w-darcula .hljs-selector-class {
+    color: #a6e22e;
+}
+
+.h2w-darcula .hljs-emphasis {
+    font-style: italic;
+}
+
+.h2w-darcula .hljs-keyword,
+.h2w-darcula .hljs-selector-tag,
+.h2w-darcula .hljs-section,
+.h2w-darcula .hljs-attribute,
+.h2w-darcula .hljs-name,
+.h2w-darcula .hljs-variable {
+    color: #cb7832;
+}
+
+.h2w-darcula .hljs-params {
+    color: #b9b9b9;
+}
+
+.h2w-darcula .hljs-string {
+    color: #a9b7c6;
+}
+
+.h2w-darcula .hljs-subst,
+.h2w-darcula .hljs-type,
+.h2w-darcula .hljs-built_in,
+.h2w-darcula .hljs-builtin-name,
+.h2w-darcula .hljs-symbol,
+.h2w-darcula .hljs-selector-id,
+.h2w-darcula .hljs-selector-attr,
+.h2w-darcula .hljs-selector-pseudo,
+.h2w-darcula .hljs-template-tag,
+.h2w-darcula .hljs-template-variable,
+.h2w-darcula .hljs-addition {
+    color: #e0c46c;
+}
+
+.h2w-darcula .hljs-comment,
+.h2w-darcula .hljs-deletion,
+.h2w-darcula .hljs-meta {
+    color: #7f7f7f;
+}
