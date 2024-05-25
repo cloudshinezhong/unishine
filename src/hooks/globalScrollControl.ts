@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted, App } from 'vue'
+import { ref, App } from 'vue'
 
 // 定义滚动控制逻辑
 const usePageScroll = () => {
@@ -13,21 +13,14 @@ const usePageScroll = () => {
   const stop = () => {
     isScrollDisabled.value = true
     document.body.style.overflow = 'hidden'
+    document.addEventListener('touchmove', box, { passive: false })
   }
 
   const move = () => {
     isScrollDisabled.value = false
     document.body.style.overflow = ''
-  }
-
-  // 在组件挂载和卸载时添加/移除事件监听器
-  onMounted(() => {
-    document.addEventListener('touchmove', box, { passive: false })
-  })
-
-  onUnmounted(() => {
     document.removeEventListener('touchmove', box, false)
-  })
+  }
 
   return {
     isScrollDisabled,

@@ -67,7 +67,7 @@
     <view
       class="flex fixed left-0 w-full h-full"
       :style="{ top: toTopHeight }"
-      @touchstart="debounce(proxy.$pageScroll.stop(), 200)"
+      @touchstart="debounce(proxy.$pageScroll.stop(), 300)"
     >
       <scroll-view
         :style="{ maxHeight: initialWindowHeight + imPlaceholderheight + 'px' }"
@@ -83,7 +83,7 @@
         <view class="">
           <!-- 聊天item -->
           <chat-item
-            v-for="item in collection.chatList"
+            v-for="(item, index) in collection.chatList"
             :item="item"
             :key="item.chatId"
             :show-cursor="false"
@@ -91,6 +91,8 @@
             @refresh="refreshChat"
             @trash="trashChat"
             @copy="copyChat"
+            @addPin="(...args) => addPin(...args, index)"
+            @removePin="removePin"
             :show-btn="!isScrolling"
           ></chat-item>
         </view>
@@ -375,7 +377,7 @@
               <slider
                 :value="aiSetOutputConf.history_length"
                 :min="0"
-                :max="64"
+                :max="32"
                 @change="historyLengthChange"
                 show-value
                 step="1"
@@ -626,6 +628,7 @@ const AIinfo = ref({
   isMe: false,
   role: 'assistant',
   status: 0, // 0 加载中 1加载完成 -1生成出错, -2网络错 -3输出中止 2持续输出
+  isPin: false,
   withContent: '', // 内容相关, 例如违法条例等
 })
 const myInfo = ref({
@@ -636,6 +639,7 @@ const myInfo = ref({
   isMe: true,
   role: 'user',
   status: 1, // 0 加载中 1加载完成 -1生成出错, -2网络错 -3输出中止 2持续输出
+  isPin: false,
   withContent: '', // 内容相关, 例如违法条例等
 })
 
@@ -731,6 +735,8 @@ watch(
 
 // 监听 isScrolling
 const msgScroll = throttle(() => {
+  // 这里返回尽量减少性能开销
+  if (sendDisabled.value && isScrolling.value) return
   isScrolling.value = true
   if (!scrollT.value) {
     scrollT.value = setTimeout(() => {
@@ -836,7 +842,9 @@ function addPrompt() {
 
 function delPrompt(id) {
   const idx = aiPrompts.value.findIndex((i) => i?.chatId === id)
+  const itIdx = collection.value.chatList.findIndex((i) => i.chatId === id)
   aiPrompts.value.splice(idx, 1)
+  collection.value.chatList[itIdx].isPin = false
   setAiPrompts()
 }
 
@@ -891,6 +899,30 @@ function composeChat({ chatId }) {
   if (it) {
     onInputValueChange(it.content)
   }
+}
+
+function addPin({ chatId, content, role }, itIdx) {
+  const idx = aiPrompts.value.findIndex((i) => i?.chatId === chatId)
+  if (idx >= 0) return
+  if (aiPrompts.value.length >= 9)
+    return uni.showToast({
+      icon: 'none',
+      title: '无法再继续添加提示词',
+      duration: 1500,
+    })
+  aiPrompts.value.push({ role, content, chatId })
+  collection.value.chatList[itIdx].isPin = true
+  setAiPrompts()
+  const tips = `已添加到预设提示词${aiPromptsCutIn.value ? '' : '，当前未启用提示词，开启提示词方可生效'}`
+  return uni.showToast({
+    icon: 'none',
+    title: tips,
+    duration: 2000,
+  })
+}
+
+function removePin({ chatId }) {
+  delPrompt(chatId)
 }
 
 function refreshChat({ chatId }) {
@@ -1105,6 +1137,7 @@ function createChatCollection(): AiChatCollection {
         role: 'assistant',
         status: 1,
         chatId: generateUniqueId(),
+        isPin: false,
         withContent: '',
       },
     ],

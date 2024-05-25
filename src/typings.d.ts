@@ -120,6 +120,7 @@ type AiChat = {
   // 0 加载中 1加载完成 -1生成出错 2持续输出 -2请求错误 -3输出中止
   status: 0 | 1 | -1 | 2 | -2 | -3
   chatId: number | string
+  isPin: boolean
   withContent: string // 内容相关，例如违法相关条例，涉及一些违规等提示或停止原因
   // 这里是谷歌gemini的文档所示的FINISH_REASON
   // FINISH_REASON_UNSPECIFIED	默认值。此值未使用。

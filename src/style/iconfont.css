@@ -8,6 +8,14 @@
   font-size: 16px;
 }
 
+.icon-pin-fill:before {
+  content: "\e863";
+}
+
+.icon-pin:before {
+  content: "\e864";
+}
+
 .icon-copy:before {
   content: '\e706';
 }

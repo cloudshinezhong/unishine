@@ -20,33 +20,37 @@
           </view>
           <view
             class="flex"
-            :class="dtoItem.isMe ? 'mr-2' : 'ml-2'"
+            :class="(dtoItem.isMe ? 'mr-2' : 'ml-2', showBtn ? 'fade-in' : 'fade-out')"
             v-if="dtoItem.status !== 0 && dtoItem.status !== 2 && showBtn"
           >
-            <uni-transition :duration="500" mode-class="fade" :show="showBtn">
-              <view class="chat-content-header-btn" @click="$emit('compose', item)">
-                <uni-icons type="compose" size="22"></uni-icons>
-              </view>
-            </uni-transition>
-            <uni-transition :duration="500" mode-class="fade" :show="showBtn">
-              <view
-                v-if="dtoItem.isMe"
-                class="chat-content-header-btn"
-                @click="$emit('refresh', item)"
-              >
-                <uni-icons type="refreshempty" size="22"></uni-icons>
-              </view>
-            </uni-transition>
-            <uni-transition :duration="500" mode-class="fade" :show="showBtn">
-              <view class="chat-content-header-btn" @click="$emit('trash', item)">
-                <uni-icons type="trash" size="22"></uni-icons>
-              </view>
-            </uni-transition>
-            <uni-transition :duration="500" mode-class="fade" :show="showBtn">
-              <view class="chat-content-header-btn" @click="$emit('copy', item)">
-                <uni-icons custom-prefix="iconfont" type="icon-copy" size="20"></uni-icons>
-              </view>
-            </uni-transition>
+            <view class="chat-content-header-btn" @click="$emit('compose', item)">
+              <uni-icons type="compose" size="22"></uni-icons>
+            </view>
+            <view
+              v-if="dtoItem.isMe"
+              class="chat-content-header-btn"
+              @click="$emit('refresh', item)"
+            >
+              <uni-icons type="refreshempty" size="22"></uni-icons>
+            </view>
+            <view class="chat-content-header-btn" @click="$emit('trash', item)">
+              <uni-icons type="trash" size="22"></uni-icons>
+            </view>
+            <view
+              class="chat-content-header-btn"
+              :style="{ backgroundColor: item.isPin ? '#f1f1f1' : '#ffffff' }"
+              @change.stop.prevent="() => {}"
+              @click.stop.prevent="$emit(item.isPin ? 'remove-pin' : 'add-pin', item)"
+            >
+              <uni-icons
+                custom-prefix="iconfont"
+                :type="item.isPin ? 'icon-pin-fill' : 'icon-pin'"
+                size="22"
+              ></uni-icons>
+            </view>
+            <view class="chat-content-header-btn" @click="$emit('copy', item)">
+              <uni-icons custom-prefix="iconfont" type="icon-copy" size="22"></uni-icons>
+            </view>
           </view>
         </view>
         <view
@@ -181,7 +185,7 @@ const markdownIt = MarkdownIt({
   },
 })
 
-const emit = defineEmits(['compose', 'refresh', 'trash', 'copy'])
+const emit = defineEmits(['compose', 'refresh', 'trash', 'copy', 'add-pin', 'remove-pin'])
 
 interface ChatItem {
   time: string
@@ -190,6 +194,7 @@ interface ChatItem {
   content: string
   isMe: boolean
   isLoading: boolean
+  isPin: boolean
   withContent: string // 内容相关
 }
 // 在这里使用 props.item
@@ -203,6 +208,7 @@ const props = defineProps({
       content: '',
       isMe: false,
       isLoading: false,
+      isPin: false,
       withContent: '', // 内容相关
     }),
   },
@@ -464,6 +470,32 @@ function trOnclick(e) {
 }
 .char-text-me {
   color: #312c2c;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .loading {
