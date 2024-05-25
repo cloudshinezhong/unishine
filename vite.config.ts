@@ -50,7 +50,6 @@ export default ({ command, mode }) => {
 
   return defineConfig({
     envDir: './env', // 自定义env目录
-
     plugins: [
       UniPages({
         dts: true,
@@ -113,13 +112,13 @@ export default ({ command, mode }) => {
       },
 
       // 打包分析插件
-      mode === 'production' &&
-        visualizer({
-          filename: './node_modules/.cache/visualizer/stats.html',
-          open: true,
-          gzipSize: true,
-          brotliSize: true,
-        }),
+      // mode === 'production' &&
+      //   visualizer({
+      //     filename: './node_modules/.cache/visualizer/stats.html',
+      //     open: true,
+      //     gzipSize: true,
+      //     brotliSize: true,
+      //   }),
       // 这个图片压缩插件比较耗时，希望仅在生产环境使用
       // TODO: 缓存每次压缩过的图片，已经压缩过的不再压缩
       imagemin(mode === 'production'),

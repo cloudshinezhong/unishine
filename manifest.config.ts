@@ -1,5 +1,5 @@
 // manifest.config.ts
-import { defineManifestConfig, UserManifestConfig } from '@uni-helper/vite-plugin-uni-manifest'
+import { defineManifestConfig } from '@uni-helper/vite-plugin-uni-manifest'
 import path from 'node:path'
 import { loadEnv } from 'vite'
 
@@ -14,13 +14,6 @@ const {
   VITE_FALLBACK_LOCALE,
 } = env
 
-const defaultH5Conf: UserManifestConfig['h5'] = {
-  publicPath: `${VITE_APP_PUBLIC_BASE}${process.env.NODE_ENV === 'development' ? '' : 'dist/build/h5/'}`,
-  router: {
-    base: `${VITE_APP_PUBLIC_BASE}${process.env.NODE_ENV === 'development' ? '' : 'dist/build/h5/'}`,
-  },
-}
-
 export default defineManifestConfig({
   name: VITE_APP_TITLE,
   appid: VITE_UNI_APPID,
@@ -29,7 +22,11 @@ export default defineManifestConfig({
   versionCode: '100',
   transformPx: false,
   locale: VITE_FALLBACK_LOCALE, // 'zh-Hans'
-  h5: defaultH5Conf,
+  h5: {
+    router: {
+      base: VITE_APP_PUBLIC_BASE,
+    },
+  },
   /* 5+App特有相关 */
   'app-plus': {
     usingComponents: true,
