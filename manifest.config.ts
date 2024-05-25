@@ -15,7 +15,7 @@ const {
 } = env
 
 const defaultH5Conf: UserManifestConfig['h5'] = {
-  publicPath: VITE_APP_PUBLIC_BASE,
+  publicPath: `${VITE_APP_PUBLIC_BASE}${process.env.NODE_ENV === 'development' ? '' : 'dist/build/h5'}`,
   router: {
     base: `${VITE_APP_PUBLIC_BASE}${process.env.NODE_ENV === 'development' ? '' : 'dist/build/h5'}`,
   },
