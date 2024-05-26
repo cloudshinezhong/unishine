@@ -559,8 +559,8 @@
         <view
           v-if="imPlaceholderheight"
           :style="{
-            height: systemInfo.safeAreaInsets.bottom + 'px',
-            paddingBottom: systemInfo.safeAreaInsets.bottom + 'px',
+            height: imPlaceholderheight + 'px',
+            paddingBottom: imPlaceholderheight + 'px',
           }"
         ></view>
       </scroll-view>

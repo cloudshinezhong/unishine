@@ -175,13 +175,13 @@ export default {
   font-size: 28rpx;
   /*height: 42rpx;*/
   width: 80%;
-  line-height: 26px;
+  line-height: 24px;
 }
 .chat-input-send {
   background-color: #007aff;
   margin: 10rpx 10rpx 10rpx 20rpx;
   border-radius: 10rpx;
-  padding: 14rpx 24rpx;
+  padding: 12rpx 30rpx;
 }
 
 .chat-input-send-text {
