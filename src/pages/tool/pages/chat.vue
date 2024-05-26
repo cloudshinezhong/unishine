@@ -67,7 +67,7 @@
     <view
       class="flex fixed left-0 w-full h-full"
       :style="{ top: toTopHeight }"
-      @touchstart="debounce(proxy.$pageScroll.stop(), 300)"
+      @touchstart="debounce(proxy.$pageScroll.stop(), 350)"
     >
       <scroll-view
         :style="{ maxHeight: initialWindowHeight + imPlaceholderheight + 'px' }"

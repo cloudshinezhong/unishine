@@ -6,7 +6,7 @@
 </route>
 <!-- 聊天item -->
 <template>
-  <view class="chat-item">
+  <view class="chat-item" @touchmove.stop.prevent>
     <view :class="{ 'chat-container': true, 'chat-location-me': dtoItem.isMe }">
       <view :class="{ 'chat-content-container': true, 'chat-content-container-me': dtoItem.isMe }">
         <view :class="{ 'chat-content-header': true, 'chat-content-header-me': dtoItem.isMe }">
@@ -39,8 +39,7 @@
             <view
               class="chat-content-header-btn"
               :style="{ backgroundColor: item.isPin ? '#f1f1f1' : '#ffffff' }"
-              @change.stop.prevent="() => {}"
-              @click.stop.prevent="$emit(item.isPin ? 'remove-pin' : 'add-pin', item)"
+              @click="$emit(item.isPin ? 'remove-pin' : 'add-pin', item)"
             >
               <uni-icons
                 custom-prefix="iconfont"
