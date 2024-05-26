@@ -1,11 +1,11 @@
 <!--聊天输入框 -->
 <template>
   <view class="chat-input-bar">
-    <view class="chat-edit" @click="leftClick">
-      <uni-icons type="settings" size="26"></uni-icons>
+    <view class="chat-edit" @click="leftClick" v-if="leftIcon">
+      <uni-icons type="settings" size="28"></uni-icons>
     </view>
     <view class="chat-input-container">
-      <view class="flex center pl-1 pr-1" @click="innerLeftClick">
+      <view class="flex center pl-1 pr-1" @click="innerLeftClick" v-if="innerLeftIcon">
         <uni-icons type="plus" size="28" color="rgb(192, 196, 204)"></uni-icons>
       </view>
       <textarea
@@ -28,7 +28,7 @@
         @linechange="$emit('linechange', $event)"
         :fixed="true"
         :adjust-position="true"
-        class="chat-input"
+        class="chat-input pl-1"
       />
       <view class="flex center pl-1 pr-1" v-if="msg.length > 0" @click="clearable">
         <uni-icons type="clear" size="24" color="rgb(192, 196, 204)"></uni-icons>
@@ -65,6 +65,18 @@ export default {
       type: String,
       default() {
         return ''
+      },
+    },
+    leftIcon: {
+      type: Boolean,
+      default() {
+        return true
+      },
+    },
+    innerLeftIcon: {
+      type: Boolean,
+      default() {
+        return true
       },
     },
   },
@@ -163,12 +175,13 @@ export default {
   font-size: 28rpx;
   /*height: 42rpx;*/
   width: 80%;
+  line-height: 26px;
 }
 .chat-input-send {
   background-color: #007aff;
   margin: 10rpx 10rpx 10rpx 20rpx;
   border-radius: 10rpx;
-  padding: 10rpx 24rpx;
+  padding: 14rpx 24rpx;
 }
 
 .chat-input-send-text {

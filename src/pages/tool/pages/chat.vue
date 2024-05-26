@@ -234,157 +234,172 @@
           <uni-icons type="closeempty" size="24"></uni-icons>
         </view>
       </view>
-      <scroll-view
-        scroll-y
-        class="flex box-border"
-        :style="{ maxHeight: initialWindowHeight * 0.72 + 'px' }"
-      >
-        <uni-section
-          type="line"
-          title="会话上游设置"
-          subTitle="对话输入的信息配置"
-          titleFontSize="16"
-          class="pl-3 pr-3 block"
+      <!--      <uni-segmented-control-->
+      <!--        class="pb-2"-->
+      <!--        style="background-color: #f1f1f1"-->
+      <!--        :current="segmentedCurrent"-->
+      <!--        :values="segmentedS"-->
+      <!--        :style-type="'text'"-->
+      <!--        @clickItem="segmentedChange"-->
+      <!--      />-->
+      <scroll-view scroll-y :style="{ maxHeight: initialWindowHeight * 0.78 + 'px' }">
+        <view
+          v-show="segmentedCurrent === 0"
+          class="flex flex-col box-border content"
+          :class="segmentedCurrent === 0 ? 'fade-in' : 'fade-out'"
         >
           <uni-section
-            title="预设提示词"
-            subTitle="提示词开启后将会插入到会话当中"
+            type="line"
+            title="会话上游设置"
+            subTitle="对话输入的信息配置"
+            titleFontSize="16"
             class="pl-3 pr-3 block"
           >
-            <template v-slot:right>
-              <view @click.stop>
-                <switch
-                  @change="aiPromptsCutInChange"
-                  :checked="aiPromptsCutIn"
-                  color="#FFCC33"
-                  style="transform: scale(0.85); padding: 0"
-                />
-              </view>
-            </template>
-            <view class="text-center mb-4">
-              <uni-icons @click="addPrompt" type="plusempty" size="32" color="#888888"></uni-icons>
-            </view>
-            <uni-forms-item v-for="item in aiPrompts" :key="item.id">
-              <view class="form-item flex center">
-                <uni-data-select
-                  class="max-w-26 pr-2"
-                  :clear="false"
-                  v-model="item.role"
-                  :localdata="chatRolesMap"
-                ></uni-data-select>
-                <uni-easyinput
-                  v-model="item.content"
-                  :trim="true"
-                  placeholder="请输入提示词内容"
-                  class="pr-2"
-                />
+            <uni-section
+              title="预设提示词"
+              subTitle="提示词开启后将会插入到会话当中"
+              class="pl-3 pr-3 block"
+            >
+              <template v-slot:right>
+                <view @click.stop>
+                  <switch
+                    @change="aiPromptsCutInChange"
+                    :checked="aiPromptsCutIn"
+                    color="#FFCC33"
+                    style="transform: scale(0.85); padding: 0"
+                  />
+                </view>
+              </template>
+              <view class="text-center mb-4">
                 <uni-icons
-                  type="clear"
-                  size="30"
-                  color="red"
-                  @click="delPrompt(item.chatId)"
+                  @click="addPrompt"
+                  type="plusempty"
+                  size="32"
+                  color="#888888"
                 ></uni-icons>
               </view>
-            </uni-forms-item>
-          </uni-section>
-        </uni-section>
-        <uni-section
-          type="line"
-          title="会话下游设置"
-          titleFontSize="16"
-          subTitle="对话输出的信息配置"
-          class="pb-10 pl-3 pr-3 block"
-        >
-          <template v-slot:right>
-            <view @click.stop class="flex">
-              <button
-                type="default"
-                size="mini"
-                @click="setDefaultOutputConf"
-                style="color: rgba(90, 190, 208, 0.97); padding: 0 6px"
-              >
-                恢复默认
-              </button>
-            </view>
-          </template>
-          <uni-section
-            title="随机性(temperature)"
-            subTitle="值越大输出越随机，生成的文本越有创意和多样性"
-            class="pl-3 pr-3 block"
-          >
-            <view class="pl-3 pr-3">
-              <uni-number-box
-                :min="0"
-                :max="1"
-                @change="temperatureChange"
-                :value="aiSetOutputConf.temperature"
-                :step="0.1"
-              />
-            </view>
+              <uni-forms-item v-for="item in aiPrompts" :key="item.id">
+                <view class="form-item flex center">
+                  <uni-data-select
+                    class="max-w-26 pr-2"
+                    :clear="false"
+                    v-model="item.role"
+                    :localdata="chatRolesMap"
+                  ></uni-data-select>
+                  <uni-easyinput
+                    v-model="item.content"
+                    :trim="true"
+                    placeholder="请输入提示词内容"
+                    class="pr-2"
+                  />
+                  <uni-icons
+                    type="clear"
+                    size="30"
+                    color="red"
+                    @click="delPrompt(item.chatId)"
+                  ></uni-icons>
+                </view>
+              </uni-forms-item>
+            </uni-section>
           </uni-section>
           <uni-section
-            title="核采样(top_p)"
-            subTitle="核心候选词采样，值越大包含更多概率较低的词语，生成文本更多样，更具创造性"
-            class="pl-3 pr-3 block"
+            type="line"
+            title="会话下游设置"
+            titleFontSize="16"
+            subTitle="对话输出的信息配置"
+            class="pb-10 pl-3 pr-3 block"
           >
-            <view class="pl-3 pr-3">
-              <uni-number-box
-                @change="topPChange"
-                :min="0"
-                :max="1"
-                :value="aiSetOutputConf.top_p"
-                :step="0.1"
-              />
-            </view>
+            <template v-slot:right>
+              <view @click.stop class="flex">
+                <button
+                  type="default"
+                  size="mini"
+                  @click="setDefaultOutputConf"
+                  style="color: rgba(90, 190, 208, 0.97); padding: 0 6px"
+                >
+                  恢复默认
+                </button>
+              </view>
+            </template>
+            <uni-section
+              title="随机性(temperature)"
+              subTitle="值越大输出越随机，生成的文本越有创意和多样性"
+              class="pl-3 pr-3 block"
+            >
+              <view class="pl-3 pr-3">
+                <uni-number-box
+                  :min="0"
+                  :max="1"
+                  @change="temperatureChange"
+                  :value="aiSetOutputConf.temperature"
+                  :step="0.1"
+                />
+              </view>
+            </uni-section>
+            <uni-section
+              title="核采样(top_p)"
+              subTitle="核心候选词采样，值越大包含更多概率较低的词语，生成文本更多样，更具创造性"
+              class="pl-3 pr-3 block"
+            >
+              <view class="pl-3 pr-3">
+                <uni-number-box
+                  @change="topPChange"
+                  :min="0"
+                  :max="1"
+                  :value="aiSetOutputConf.top_p"
+                  :step="0.1"
+                />
+              </view>
+            </uni-section>
+            <uni-section
+              title="前采样(top_k)"
+              subTitle="前k个候选词采样，值越大生成结果更具多样性和创造性，但生成结果也会不稳定"
+              class="pl-3 pr-3 block"
+            >
+              <view class="pl-3 pr-3">
+                <uni-number-box
+                  @change="topKChange"
+                  :min="1"
+                  :max="100"
+                  :value="aiSetOutputConf.top_k"
+                  :step="1"
+                />
+              </view>
+            </uni-section>
+            <uni-section
+              title="单次最大输出量(max_tokens)"
+              subTitle="token数取决于具体的文本内容和分词算法，一个词语通常对应一个或多个token"
+              class="pl-3 pr-3 block"
+            >
+              <view class="pl-3 pr-3">
+                <slider
+                  :value="aiSetOutputConf.max_tokens"
+                  :min="10"
+                  :max="9999"
+                  show-value
+                  @change="maxTokensChange"
+                  step="1"
+                />
+              </view>
+            </uni-section>
+            <uni-section
+              title="附带的历史消息数"
+              subTitle="每次请求附带的历史消息，使AI能够理解上下文，输出合适的回复"
+              class="pl-3 pr-3 block"
+            >
+              <view class="pl-3 pr-3">
+                <slider
+                  :value="aiSetOutputConf.history_length"
+                  :min="0"
+                  :max="32"
+                  @change="historyLengthChange"
+                  show-value
+                  step="1"
+                />
+              </view>
+            </uni-section>
           </uni-section>
-          <uni-section
-            title="前采样(top_k)"
-            subTitle="前k个候选词采样，值越大生成结果更具多样性和创造性，但生成结果也会不稳定"
-            class="pl-3 pr-3 block"
-          >
-            <view class="pl-3 pr-3">
-              <uni-number-box
-                @change="topKChange"
-                :min="1"
-                :max="100"
-                :value="aiSetOutputConf.top_k"
-                :step="1"
-              />
-            </view>
-          </uni-section>
-          <uni-section
-            title="单次最大输出量(max_tokens)"
-            subTitle="token数取决于具体的文本内容和分词算法，一个词语通常对应一个或多个token"
-            class="pl-3 pr-3 block"
-          >
-            <view class="pl-3 pr-3">
-              <slider
-                :value="aiSetOutputConf.max_tokens"
-                :min="10"
-                :max="9999"
-                show-value
-                @change="maxTokensChange"
-                step="1"
-              />
-            </view>
-          </uni-section>
-          <uni-section
-            title="附带的历史消息数"
-            subTitle="每次请求附带的历史消息，使AI能够理解上下文，输出合适的回复"
-            class="pl-3 pr-3 block"
-          >
-            <view class="pl-3 pr-3">
-              <slider
-                :value="aiSetOutputConf.history_length"
-                :min="0"
-                :max="32"
-                @change="historyLengthChange"
-                show-value
-                step="1"
-              />
-            </view>
-          </uni-section>
-        </uni-section>
+        </view>
       </scroll-view>
       <!-- #ifdef MP -->
       <view
@@ -411,7 +426,7 @@
       <!-- #endif -->
       <scroll-view
         scroll-y
-        class="popup-content max-w-72 flex box-border bg-white"
+        class="popup-content max-w-74 flex box-border bg-white"
         :style="{ maxHeight: initialWindowHeight + imPlaceholderheight + 'px' }"
       >
         <uni-section
@@ -498,7 +513,7 @@
             </view>
           </uni-card>
         </uni-section>
-        <uni-section title="历史聊天" subTitle="创建的聊天历史" class="pb-10 pl-3 pr-3 block">
+        <uni-section title="历史聊天" subTitle="创建的聊天历史" class="pl-3 pr-3 block">
           <template v-slot:right>
             <view class="max-w-32">
               <text style="font-size: 20rpx; color: #dd524d">
@@ -540,8 +555,8 @@
             </template>
           </uni-card>
         </uni-section>
+        <view :style="{ height: '60px' }"></view>
       </scroll-view>
-      <view v-if="imPlaceholderheight" :style="{ backgroundColor: '#f8f8f8' }"></view>
     </view>
   </uni-popup>
 </template>
@@ -690,6 +705,9 @@ const _child = ref({
   uDesc: '',
 }) // 当前子菜单
 
+const segmentedS = ref(['基本设置', '会话设置'])
+const segmentedCurrent = ref(0)
+
 // 计算属性
 const imPlaceholderheight = computed(() => {
   return keyboardHeight.value + systemInfo.value.safeAreaInsets.bottom
@@ -746,6 +764,10 @@ const msgScroll = throttle(() => {
     }, 350)
   }
 }, 50)
+
+function segmentedChange({ currentIndex }) {
+  segmentedCurrent.value = currentIndex
+}
 
 function inputFocus() {
   showLast()
@@ -1808,6 +1830,7 @@ page {
   position: relative;
 }
 
+/*
 //.safe-bottom {
 //  padding-bottom: constant(safe-area-inset-bottom) !important;
 //  padding-bottom: env(safe-area-inset-bottom) !important;
@@ -1824,9 +1847,36 @@ page {
 //  top: -40px;
 //  left: 0;
 //}
+*/
+
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 .list-last-item {
-  padding-bottom: 212px;
+  padding-bottom: 218px;
 }
 
 .card-actions {
