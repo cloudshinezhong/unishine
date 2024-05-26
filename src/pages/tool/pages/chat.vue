@@ -242,7 +242,7 @@
       <!--        :style-type="'text'"-->
       <!--        @clickItem="segmentedChange"-->
       <!--      />-->
-      <scroll-view scroll-y :style="{ maxHeight: initialWindowHeight * 0.78 + 'px' }">
+      <scroll-view scroll-y :style="{ maxHeight: initialWindowHeight * 0.7 + 'px' }">
         <view
           v-show="segmentedCurrent === 0"
           class="flex flex-col box-border content"
@@ -555,7 +555,14 @@
             </template>
           </uni-card>
         </uni-section>
-        <view :style="{ height: '60px' }"></view>
+        <view :style="{ height: '40px' }"></view>
+        <view
+          v-if="imPlaceholderheight"
+          :style="{
+            height: systemInfo.safeAreaInsets.bottom + 'px',
+            paddingBottom: systemInfo.safeAreaInsets.bottom + 'px',
+          }"
+        ></view>
       </scroll-view>
     </view>
   </uni-popup>
