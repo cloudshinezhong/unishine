@@ -98,14 +98,14 @@
         </view>
         <!-- 底部会话条数 -->
         <view class="flex center">
-          <uni-transition
-            mode-class="fade"
-            :show="Boolean(collection.chatList.length && !sendDisabled)"
+          <view
+            :class="Boolean(collection.chatList.length && !sendDisabled) ? 'fade-in' : 'fade-out'"
+            v-show="Boolean(collection.chatList.length && !sendDisabled)"
           >
             <text style="font-size: 22rpx; color: #aaaaaa">
               共{{ collection.chatList.length }}条对话
             </text>
-          </uni-transition>
+          </view>
         </view>
         <view class="list-last-item" id="list-last-item" key="list-last-item">
           <!-- 高度为0的 最后一个元素用于方便滚动到最后一个元素 -->
@@ -118,14 +118,18 @@
     <view class="fixed flex-col flex left-0 bottom-0 w-full">
       <!--  底部停止按钮 -->
       <view class="flex center abort-btn w-full mb-2">
-        <uni-transition
-          mode-class="fade"
-          :show="lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2"
+        <view
+          :class="
+            lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2
+              ? 'fade-in'
+              : 'fade-out'
+          "
+          v-show="lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2"
         >
           <view class="chat-content-header-btn" style="opacity: 0.8" @click.stop="abortChat">
             <uni-icons type="minus-filled" size="32" color="red"></uni-icons>
           </view>
-        </uni-transition>
+        </view>
       </view>
       <view class="bottom">
         <chat-input-bar
@@ -161,14 +165,18 @@
     >
       <!--  底部停止按钮 -->
       <view class="flex center abort-btn w-full mb-2">
-        <uni-transition
-          mode-class="fade"
-          :show="lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2"
+        <view
+          :class="
+            lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2
+              ? 'fade-in'
+              : 'fade-out'
+          "
+          v-show="lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2"
         >
           <view class="chat-content-header-btn" style="opacity: 0.8" @click.stop="abortChat">
             <uni-icons type="minus-filled" size="32" color="red"></uni-icons>
           </view>
-        </uni-transition>
+        </view>
       </view>
       <view class="bottom">
         <chat-input-bar
@@ -192,14 +200,18 @@
     <view class="fixed flex-col flex left-0 bottom-0 w-full">
       <!--  底部停止按钮 -->
       <view class="flex center abort-btn w-full mb-2">
-        <uni-transition
-          mode-class="fade"
-          :show="lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2"
+        <view
+          :class="
+            lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2
+              ? 'fade-in'
+              : 'fade-out'
+          "
+          v-show="lastMessage && aiSetStream && !lastMessage.isMe && lastMessage.status === 2"
         >
           <view class="chat-content-header-btn" style="opacity: 0.8" @click.stop="abortChat">
             <uni-icons type="minus-filled" size="32" color="red"></uni-icons>
           </view>
-        </uni-transition>
+        </view>
       </view>
       <view class="bottom">
         <chat-input-bar
