@@ -728,10 +728,17 @@ const imPlaceholderheight = computed(() => {
   return keyboardHeight.value + systemInfo.value.safeAreaInsets.bottom
 })
 
+const msgListLastPadding = computed(() => {
+  return 100 + imPlaceholderheight.value + 'px'
+})
+
 // 计算属性
 const msgListHeight = computed(() => {
   // h-11是2.75rem，48px左右，60是底部inputbar高度, 22px是提示词未展开高度
-  return initialWindowHeight.value - (60 + 48 + 22 + imPlaceholderheight.value)
+  return (
+    initialWindowHeight.value -
+    (60 + 48 + (aiPromptsCutIn.value ? 22 : 0) + systemInfo.value.safeAreaInsets.bottom)
+  )
 })
 
 // 最后一条消息
@@ -815,15 +822,15 @@ function inputLineChange(e) {
 
 function setScrollHeight() {
   // #ifdef MP
-  // h-11是2.75rem，48px左右，100px的是提示词栏的高度，标题栏18px+4pxpadding
+  // h-11是2.75rem，48px左右，100px的是提示词栏的高度，标题栏20px+4pxpadding
   toTopHeight.value =
-    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 18 : 0) + 47 + 'px'
+    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 22 : 0) + 47 + 'px'
   systemInfo.value.windowHeight =
     initialWindowHeight.value - (systemInfo.value.safeAreaInsets.bottom + inputBarHeight.value)
   // #endif
 
   // #ifndef MP
-  toTopHeight.value = (aiPromptsCutIn.value ? 18 : 0) + 47 + 'px'
+  toTopHeight.value = (aiPromptsCutIn.value ? 22 : 0) + 47 + 'px'
   systemInfo.value.windowHeight = initialWindowHeight.value - inputBarHeight.value
   // #endif
 }
@@ -1945,7 +1952,7 @@ page {
 }
 
 .list-last-item {
-  padding-bottom: 100px;
+  padding-bottom: v-bind('msgListLastPadding');
 }
 
 .card-actions {
