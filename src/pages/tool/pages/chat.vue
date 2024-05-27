@@ -917,7 +917,7 @@ async function openChat(item) {
   await uni.showLoading({ mask: true })
   collection.value = setChatCollection(item)
   popupClose()
-  nextTick().then(() => showLast())
+  nextTick(showLast)
   await uni.hideLoading()
 }
 
@@ -999,6 +999,7 @@ function abortChat() {
     event: 'abort',
   })
   // #endif
+  nextTick(updateIntersectionObserver)
 }
 
 function trashChat({ chatId }) {
@@ -1008,6 +1009,7 @@ function trashChat({ chatId }) {
       1,
     )
   }
+  nextTick(updateIntersectionObserver)
 }
 
 function copyChat({ chatId }) {
@@ -1727,6 +1729,7 @@ async function handleQuery(queryStream) {
         })
       }
     })
+    .finally(() => nextTick(updateIntersectionObserver))
 }
 
 async function handleTask(queryStream) {
@@ -1781,6 +1784,7 @@ async function handleTask(queryStream) {
       })
       clearInterval(timer)
     })
+    .finally(() => nextTick(updateIntersectionObserver))
 }
 
 function setHeight() {
