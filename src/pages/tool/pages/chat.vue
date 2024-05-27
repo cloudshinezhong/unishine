@@ -584,14 +584,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import {
-  back,
-  debounce,
-  generateUniqueId,
-  prettyJson,
-  decodeUtf8,
-  exportJson,
-} from '@/utils'
+import { back, debounce, generateUniqueId, prettyJson, decodeUtf8, exportJson } from '@/utils'
 import {
   conversationAi,
   conversationAiStream,
@@ -637,6 +630,7 @@ const inputBar = ref(null) // chatInputBar组件
 const listContainer = ref(null) // chatitem列表父组件
 const chatItemElement = ref([]) // 使用数组存储 chat-item 的 ref
 let listContainerObserver = null // 监视器
+let resizeObserver = null // 容器高度监视器，监听容器高度变化
 
 const systemInfo = ref({
   safeAreaInsets: {
@@ -737,7 +731,7 @@ const imPlaceholderheight = computed(() => {
 // 计算属性
 const msgListHeight = computed(() => {
   // h-11是2.75rem，48px左右，60是底部inputbar高度, 22px是提示词未展开高度
-  return initialWindowHeight.value - (60 + 48 + 22 + systemInfo.value.safeAreaInsets.bottom)
+  return initialWindowHeight.value - (60 + 48 + 22 + imPlaceholderheight.value)
 })
 
 // 最后一条消息
@@ -776,6 +770,12 @@ watch(
     sendDisabled.value = lastMessage.value.status === 0 || lastMessage.value.status === 2
   },
   { deep: true },
+)
+
+// 监听 元素 变化
+watch(
+  () => collection.value.chatList.length,
+  () => updateIntersectionObserver(),
 )
 
 function segmentedChange({ currentIndex }) {
@@ -1793,37 +1793,45 @@ function setHeight() {
   // #endif
 }
 
-function onObserver() {
+// 更新 IntersectionObserver
+function updateIntersectionObserver() {
+  if (listContainerObserver) {
+    listContainerObserver.disconnect()
+  }
   listContainerObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry: any) => {
-        const index = entry.target.dataset.index // 获取元素索引
-        // 元素进入可视区域 entry.isIntersecting
-        // 元素离开可视区域 !entry.isIntersecting
-        // 可根据需要决定是否隐藏按钮
+        const index = entry.target.dataset.index
         collection.value.chatList[index].showBtn = !!entry.isIntersecting
       })
     },
     {
       // 获取 ref 对象对应的 DOM 节点
       root: listContainer.value ? listContainer.value.$el : null,
-      threshold: 0.8, // 初始0，动态调整，0.5可见比例达到 50% 时触发
+      threshold: 0.8, // 可以根据需要动态计算
     },
   )
-
-  // 使用 nextTick 延迟 observe() 方法的调用
-  // 观察所有 chat-item 元素
+  // 重新监听所有 chat-item 元素
   nextTick(() => {
     chatItemElement.value.forEach((item, index) => {
-      // 需要监听一个高度固定的元素，不然动态阈值会比较麻烦
-      // 获取子元素，假设子元素的 ref 属性为 "chatItemHeader"
       const targetElement = item.$refs?.chatItemHeader
       if (targetElement) {
-        targetElement.$el.dataset.index = index // 为每个元素设置索引
+        targetElement.$el.dataset.index = index
         listContainerObserver.observe(targetElement.$el)
       }
     })
   })
+}
+
+function onObserver() {
+  // 创建 ResizeObserver 实例
+  resizeObserver = new ResizeObserver(() => {
+    // 容器大小发生变化时触发
+    // 在 DOM 更新后更新 IntersectionObserver
+    nextTick(updateIntersectionObserver)
+  })
+  // 监听容器高度变化
+  resizeObserver.observe(listContainer.value.$el)
 }
 
 function offObserver() {
@@ -1831,6 +1839,8 @@ function offObserver() {
     listContainerObserver.disconnect() // 组件卸载时停止观察
     listContainerObserver = null
   }
+  // 停止监听容器高度变化
+  resizeObserver.disconnect()
 }
 
 onLoad((option) => {
@@ -1865,7 +1875,10 @@ onMounted(async () => {
 })
 
 onShow(() => proxy.$pageScroll.stop())
-onBeforeUnmount(() => proxy.$pageScroll.move() && offObserver())
+onBeforeUnmount(() => {
+  offObserver()
+  proxy.$pageScroll.move()
+})
 </script>
 
 <style lang="scss" scoped>
