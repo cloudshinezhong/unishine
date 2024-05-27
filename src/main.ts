@@ -1,5 +1,4 @@
 import { createSSRApp } from 'vue'
-import uvUI from '@climblee/uv-ui'
 import App from './App.vue'
 import store from './store'
 import { routeInterceptor, requestInterceptor } from './interceptors'
@@ -13,7 +12,6 @@ import '@/style/index.scss'
 
 export function createApp() {
   const app = createSSRApp(App)
-  app.use(uvUI)
   app.use(store)
   app.use(globalScrollControl)
   app.use(routeInterceptor)

@@ -735,7 +735,7 @@ const msgListLastPadding = computed(() => {
 // 计算属性
 const msgListHeight = computed(() => {
   // h-11是2.75rem，48px左右，60是底部inputbar高度, 22px是提示词未展开高度
-  return initialWindowHeight.value - (60 + 48 + (aiPromptsCutIn.value ? 22 : 0))
+  return initialWindowHeight.value - (60 + 48 + (aiPromptsCutIn.value ? 20 : 0))
 })
 
 // 最后一条消息
@@ -779,7 +779,7 @@ watch(
 // 监听 元素 变化
 watch(
   () => collection.value.chatList.length,
-  () => updateIntersectionObserver(),
+  () => nextTick(updateIntersectionObserver),
 )
 
 function segmentedChange({ currentIndex }) {
@@ -821,13 +821,13 @@ function setScrollHeight() {
   // #ifdef MP
   // h-11是2.75rem，48px左右，100px的是提示词栏的高度，标题栏20px+4pxpadding
   toTopHeight.value =
-    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 22 : 0) + 47 + 'px'
+    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 20 : 0) + 47 + 'px'
   systemInfo.value.windowHeight =
     initialWindowHeight.value - (systemInfo.value.safeAreaInsets.bottom + inputBarHeight.value)
   // #endif
 
   // #ifndef MP
-  toTopHeight.value = (aiPromptsCutIn.value ? 22 : 0) + 47 + 'px'
+  toTopHeight.value = (aiPromptsCutIn.value ? 20 : 0) + 47 + 'px'
   systemInfo.value.windowHeight = initialWindowHeight.value - inputBarHeight.value
   // #endif
 }
@@ -1787,12 +1787,12 @@ function setHeight() {
   // #ifdef MP
   // h-11是2.75rem，48px左右，100px的是提示词栏的高度，标题栏18px+4pxpadding
   toTopHeight.value =
-    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 18 : 0) + 47 + 'px'
+    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 20 : 0) + 47 + 'px'
   systemInfo.value.windowHeight -= systemInfo.value.safeAreaInsets.bottom + inputBarHeight.value
   // #endif
 
   // #ifndef MP
-  toTopHeight.value = (aiPromptsCutIn.value ? 18 : 0) + 47 + 'px'
+  toTopHeight.value = (aiPromptsCutIn.value ? 20 : 0) + 47 + 'px'
   systemInfo.value.windowHeight -= inputBarHeight.value
   // #endif
 }
