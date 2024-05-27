@@ -9,7 +9,10 @@
   <view class="chat-item" @touchmove.stop.prevent>
     <view :class="{ 'chat-container': true, 'chat-location-me': dtoItem.isMe }">
       <view :class="{ 'chat-content-container': true, 'chat-content-container-me': dtoItem.isMe }">
-        <view :class="{ 'chat-content-header': true, 'chat-content-header-me': dtoItem.isMe }">
+        <view
+          ref="chatItemHeader"
+          :class="{ 'chat-content-header': true, 'chat-content-header-me': dtoItem.isMe }"
+        >
           <view class="chat-icon-container">
             <image class="chat-icon" :src="dtoItem.icon" mode="aspectFill" />
           </view>

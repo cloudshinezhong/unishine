@@ -68,34 +68,36 @@
       class="flex fixed left-0 w-full h-full"
       :style="{ top: toTopHeight }"
       @touchstart="debounce(proxy.$pageScroll.stop(), 350)"
+      ref="listContainer"
     >
       <scroll-view
-        :style="{ maxHeight: initialWindowHeight + imPlaceholderheight + 'px' }"
+        :style="{
+          maxHeight: initialWindowHeight + imPlaceholderheight + 'px',
+          height: msgListHeight + 'px',
+        }"
         :scroll-with-animation="false"
         scroll-y
         :scroll-into-view="scrollIntoView"
         class="msg-list"
-        @scroll="msgScroll"
       >
         <view class="list-first-item" id="list-first-item" key="list-first-item">
-          <!-- 高度为0的 第一个元素用于方便滚动到第一一个元素 -->
+          <!-- 高度为0的 第一个元素用于方便滚动到第一个元素 -->
         </view>
-        <view class="">
-          <!-- 聊天item -->
-          <chat-item
-            v-for="(item, index) in collection.chatList"
-            :item="item"
-            :key="item.chatId"
-            :show-cursor="false"
-            @compose="composeChat"
-            @refresh="refreshChat"
-            @trash="trashChat"
-            @copy="copyChat"
-            @addPin="(...args) => addPin(...args, index)"
-            @removePin="removePin"
-            :show-btn="!isScrolling"
-          ></chat-item>
-        </view>
+        <!-- 聊天item -->
+        <chat-item
+          v-for="(item, index) in collection.chatList"
+          :item="item"
+          :key="item.chatId"
+          :show-cursor="false"
+          @compose="composeChat"
+          @refresh="refreshChat"
+          @trash="trashChat"
+          @copy="copyChat"
+          @addPin="(...args) => addPin(...args, index)"
+          @removePin="removePin"
+          :show-btn="!!item.showBtn"
+          ref="chatItemElement"
+        ></chat-item>
         <!-- 底部会话条数 -->
         <view class="flex center">
           <view
@@ -589,7 +591,6 @@ import {
   prettyJson,
   decodeUtf8,
   exportJson,
-  throttle,
 } from '@/utils'
 import {
   conversationAi,
@@ -633,7 +634,9 @@ const bottomPopup = ref(null) // 底部popup组件
 
 const inputBar = ref(null) // chatInputBar组件
 
-const scroller = ref(null) // scroller组件
+const listContainer = ref(null) // chatitem列表父组件
+const chatItemElement = ref([]) // 使用数组存储 chat-item 的 ref
+let listContainerObserver = null // 监视器
 
 const systemInfo = ref({
   safeAreaInsets: {
@@ -663,6 +666,7 @@ const AIinfo = ref({
   role: 'assistant',
   status: 0, // 0 加载中 1加载完成 -1生成出错, -2网络错 -3输出中止 2持续输出
   isPin: false,
+  showBtn: false,
   withContent: '', // 内容相关, 例如违法条例等
 })
 const myInfo = ref({
@@ -674,6 +678,7 @@ const myInfo = ref({
   role: 'user',
   status: 1, // 0 加载中 1加载完成 -1生成出错, -2网络错 -3输出中止 2持续输出
   isPin: false,
+  showBtn: false,
   withContent: '', // 内容相关, 例如违法条例等
 })
 
@@ -701,9 +706,6 @@ const sendDisabled = ref(false)
 const sendValue = ref('') // 输入框的值
 const gettingModels = ref(false) // 是否在获取Models
 
-const isScrolling = ref(false) // 消息列是否在滚动
-const scrollT = ref(null) // 消息列滚动timeout
-
 const initialWindowHeight = ref(0) // 屏幕原始高度
 
 const toTopHeight = ref('') // 内容距离顶部高度
@@ -730,6 +732,12 @@ const segmentedCurrent = ref(0)
 // 计算属性
 const imPlaceholderheight = computed(() => {
   return keyboardHeight.value + systemInfo.value.safeAreaInsets.bottom
+})
+
+// 计算属性
+const msgListHeight = computed(() => {
+  // h-11是2.75rem，48px左右，60是底部inputbar高度, 22px是提示词未展开高度
+  return initialWindowHeight.value - (60 + 48 + 22 + systemInfo.value.safeAreaInsets.bottom)
 })
 
 // 最后一条消息
@@ -769,20 +777,6 @@ watch(
   },
   { deep: true },
 )
-
-// 监听 isScrolling
-const msgScroll = throttle(() => {
-  // 这里返回尽量减少性能开销
-  if (sendDisabled.value && isScrolling.value) return
-  isScrolling.value = true
-  if (!scrollT.value) {
-    scrollT.value = setTimeout(() => {
-      isScrolling.value = false
-      clearTimeout(scrollT.value)
-      scrollT.value = null
-    }, 350)
-  }
-}, 50)
 
 function segmentedChange({ currentIndex }) {
   segmentedCurrent.value = currentIndex
@@ -1179,6 +1173,7 @@ function createChatCollection(): AiChatCollection {
         status: 1,
         chatId: generateUniqueId(),
         isPin: false,
+        showBtn: false,
         withContent: '',
       },
     ],
@@ -1798,6 +1793,46 @@ function setHeight() {
   // #endif
 }
 
+function onObserver() {
+  listContainerObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry: any) => {
+        const index = entry.target.dataset.index // 获取元素索引
+        // 元素进入可视区域 entry.isIntersecting
+        // 元素离开可视区域 !entry.isIntersecting
+        // 可根据需要决定是否隐藏按钮
+        collection.value.chatList[index].showBtn = !!entry.isIntersecting
+      })
+    },
+    {
+      // 获取 ref 对象对应的 DOM 节点
+      root: listContainer.value ? listContainer.value.$el : null,
+      threshold: 0.8, // 初始0，动态调整，0.5可见比例达到 50% 时触发
+    },
+  )
+
+  // 使用 nextTick 延迟 observe() 方法的调用
+  // 观察所有 chat-item 元素
+  nextTick(() => {
+    chatItemElement.value.forEach((item, index) => {
+      // 需要监听一个高度固定的元素，不然动态阈值会比较麻烦
+      // 获取子元素，假设子元素的 ref 属性为 "chatItemHeader"
+      const targetElement = item.$refs?.chatItemHeader
+      if (targetElement) {
+        targetElement.$el.dataset.index = index // 为每个元素设置索引
+        listContainerObserver.observe(targetElement.$el)
+      }
+    })
+  })
+}
+
+function offObserver() {
+  if (listContainerObserver) {
+    listContainerObserver.disconnect() // 组件卸载时停止观察
+    listContainerObserver = null
+  }
+}
+
 onLoad((option) => {
   try {
     parents.value = JSON.parse(decodeURIComponent(option.parents))
@@ -1825,10 +1860,12 @@ onMounted(async () => {
   await initChatList()
 
   setHeight()
+
+  onObserver()
 })
 
 onShow(() => proxy.$pageScroll.stop())
-onBeforeUnmount(() => proxy.$pageScroll.move())
+onBeforeUnmount(() => proxy.$pageScroll.move() && offObserver())
 </script>
 
 <style lang="scss" scoped>
@@ -1895,7 +1932,7 @@ page {
 }
 
 .list-last-item {
-  padding-bottom: 218px;
+  padding-bottom: 100px;
 }
 
 .card-actions {

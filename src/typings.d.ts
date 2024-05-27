@@ -121,6 +121,8 @@ type AiChat = {
   status: 0 | 1 | -1 | 2 | -2 | -3
   chatId: number | string
   isPin: boolean
+
+  showBtn: boolean // 操作按钮是否展示
   withContent: string // 内容相关，例如违法相关条例，涉及一些违规等提示或停止原因
   // 这里是谷歌gemini的文档所示的FINISH_REASON
   // FINISH_REASON_UNSPECIFIED	默认值。此值未使用。
