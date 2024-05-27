@@ -569,7 +569,7 @@
             </template>
           </uni-card>
         </uni-section>
-        <view :style="{ height: '40px' }"></view>
+        <view :style="{ height: imPlaceholderheight + '40px' }"></view>
         <view
           v-if="imPlaceholderheight"
           :style="{
@@ -735,10 +735,7 @@ const msgListLastPadding = computed(() => {
 // 计算属性
 const msgListHeight = computed(() => {
   // h-11是2.75rem，48px左右，60是底部inputbar高度, 22px是提示词未展开高度
-  return (
-    initialWindowHeight.value -
-    (60 + 48 + (aiPromptsCutIn.value ? 22 : 0) + systemInfo.value.safeAreaInsets.bottom)
-  )
+  return initialWindowHeight.value - (60 + 48 + (aiPromptsCutIn.value ? 22 : 0))
 })
 
 // 最后一条消息
