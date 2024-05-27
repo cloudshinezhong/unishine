@@ -729,7 +729,7 @@ const imPlaceholderheight = computed(() => {
 })
 
 const msgListLastPadding = computed(() => {
-  return 100 + imPlaceholderheight.value + 'px'
+  return 100 + imPlaceholderheight.value * 2 + 'px'
 })
 
 // 计算属性
@@ -980,7 +980,6 @@ function refreshChat({ chatId }) {
   const itIdx = collection.value.chatList.findIndex((i) => i.chatId === chatId)
   const it = collection.value.chatList[itIdx]
   if (it && it.isMe && it.content) {
-    collection.value.chatList.splice(itIdx, 1)
     doSendAi(it.content)
   }
 }
@@ -1009,7 +1008,6 @@ function trashChat({ chatId }) {
       1,
     )
   }
-  nextTick(updateIntersectionObserver)
 }
 
 function copyChat({ chatId }) {
@@ -1729,7 +1727,6 @@ async function handleQuery(queryStream) {
         })
       }
     })
-    .finally(() => nextTick(updateIntersectionObserver))
 }
 
 async function handleTask(queryStream) {
@@ -1784,7 +1781,6 @@ async function handleTask(queryStream) {
       })
       clearInterval(timer)
     })
-    .finally(() => nextTick(updateIntersectionObserver))
 }
 
 function setHeight() {
@@ -1835,7 +1831,7 @@ function onObserver() {
   // 创建 ResizeObserver 实例
   resizeObserver = new ResizeObserver(() => {
     // 容器大小发生变化时触发
-    // 在 DOM 更新后更新 IntersectionObserver
+    console.log('容器大小发生变化')
     nextTick(updateIntersectionObserver)
   })
   // 监听容器高度变化
@@ -1848,7 +1844,7 @@ function offObserver() {
     listContainerObserver = null
   }
   // 停止监听容器高度变化
-  resizeObserver.disconnect()
+  if (resizeObserver) resizeObserver.disconnect()
 }
 
 onLoad((option) => {
