@@ -131,6 +131,7 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
+import { debounce } from '@/utils'
 // 引入markdown-it库
 import MarkdownIt from '@/lib/markdown-it.min'
 // hljs是由 Highlight.js 经兼容性修改后的文件，请勿直接升级。否则会造成uni-app-vue3-Android下有兼容问题
@@ -151,6 +152,7 @@ const markdownIt = MarkdownIt({
   html: true,
   breaks: true,
   typographer: true,
+  linkify: true, // 将类似 URL 的文本自动转换为链接。
   // 如果结果以 <pre ... 开头，内部包装器则会跳过。
   highlight: function (str, lang) {
     // 经过highlight.js处理后的html
@@ -160,18 +162,19 @@ const markdownIt = MarkdownIt({
     } catch (err) {
       preCode = markdownIt.utils.escapeHtml(str)
     }
+    let html = preCode
     // 以换行进行分割
-    const lines = preCode.split(/\n/).slice(0, -1)
-    // 添加自定义行号
-    let html = lines
-      .map((item, index) => {
-        // 去掉空行
-        if (item === '') {
-          return ''
-        }
-        return '<li><span class="line-num" data-line="' + (index + 1) + '"></span>' + item + '</li>'
-      })
-      .join('')
+    // const lines = preCode.split(/\n/).slice(0, -1)
+    // // 添加自定义行号
+    // let html = lines
+    //   .map((item, index) => {
+    //     // 去掉空行
+    //     if (item === '') {
+    //       return ''
+    //     }
+    //     return '<li><span class="line-num" data-line="' + (index + 1) + '"></span>' + item + '</li>'
+    //   })
+    //   .join('')
     html = '<ol style="padding: 0px 28px;">' + html + '</ol>'
     // 代码复制功能
     codeDataList.value.push(str)
@@ -327,7 +330,7 @@ const nodes = computed(() => {
     })
     // #endif
     // #ifndef MP
-    htmlString = markdownIt.render(msgContent.value) + '\n <span class="cursor"></span>'
+    htmlString = markdownIt.render(msgContent.value)
     // #endif
   }
 

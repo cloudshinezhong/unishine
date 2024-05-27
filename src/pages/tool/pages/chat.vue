@@ -1806,7 +1806,9 @@ function updateIntersectionObserver() {
     (entries) => {
       entries.forEach((entry: any) => {
         const index = entry.target.dataset.index
-        collection.value.chatList[index].showBtn = !!entry.isIntersecting
+        if (collection.value.chatList[index]) {
+          collection.value.chatList[index].showBtn = !!entry.isIntersecting
+        }
       })
     },
     {
