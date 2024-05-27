@@ -569,7 +569,7 @@
             </template>
           </uni-card>
         </uni-section>
-        <view :style="{ height: imPlaceholderheight + '40px' }"></view>
+        <view :style="{ height: imPlaceholderheight + 40 + 'px' }"></view>
         <view
           v-if="imPlaceholderheight"
           :style="{
