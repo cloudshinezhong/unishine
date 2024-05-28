@@ -14,9 +14,9 @@ const aiInfoInitState = {
   outputConf: {
     temperature: 0.5,
     top_p: 1,
-    top_k: 1,
+    top_k: 5,
     max_tokens: 2048,
-    history_length: 4,
+    history_length: 6,
   },
 }
 
@@ -33,9 +33,9 @@ const botInfoInitState = {
   outputConf: {
     temperature: 0.5,
     top_p: 1,
-    top_k: 1,
+    top_k: 5,
     max_tokens: 2048,
-    history_length: 4,
+    history_length: 6,
   },
 }
 
@@ -51,9 +51,9 @@ const geminiInfoInitState = {
   outputConf: {
     temperature: 0.5,
     top_p: 1,
-    top_k: 1,
+    top_k: 5,
     max_tokens: 2048,
-    history_length: 4,
+    history_length: 6,
   },
 }
 
@@ -69,9 +69,9 @@ const groqInfoInitState = {
   outputConf: {
     temperature: 0.5,
     top_p: 1,
-    top_k: 1,
+    top_k: 5,
     max_tokens: 2048,
-    history_length: 4,
+    history_length: 6,
   },
 }
 
@@ -135,7 +135,7 @@ export const useAiStore = defineStore(
     // 监听 消息集 变化，更新存储信息
     watch(
       aiChatCollection,
-      debounce(() => updateLocalStorageInfo(), 500),
+      debounce(() => updateLocalStorageInfo(), 1000),
       { deep: true },
     )
 

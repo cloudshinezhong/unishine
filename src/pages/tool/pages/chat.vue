@@ -67,7 +67,7 @@
     <view
       class="flex fixed left-0 w-full h-full"
       :style="{ top: toTopHeight }"
-      @touchstart="debounce(proxy.$pageScroll.stop(), 350)"
+      @touchstart.stop.passive="debounce(proxy.$pageScroll.stop(), 1000)"
       ref="listContainer"
     >
       <scroll-view
@@ -87,7 +87,7 @@
         <chat-item
           v-for="(item, index) in collection.chatList"
           :item="item"
-          :key="item.chatId"
+          :key="index"
           :show-cursor="false"
           @compose="composeChat"
           @refresh="refreshChat"
@@ -265,8 +265,8 @@
           <uni-section
             type="line"
             title="会话上游设置"
+            titleFontSize="18"
             subTitle="对话输入的信息配置"
-            titleFontSize="16"
             class="pl-3 pr-3 block"
           >
             <uni-section
@@ -319,7 +319,7 @@
           <uni-section
             type="line"
             title="会话下游设置"
-            titleFontSize="16"
+            titleFontSize="18"
             subTitle="对话输出的信息配置"
             class="pb-10 pl-3 pr-3 block"
           >
@@ -445,6 +445,7 @@
       >
         <uni-section
           title="流式回复"
+          titleFontSize="16"
           subTitle="消息流式回复，开启体验会更好"
           class="pl-3 pr-3 block"
         >
@@ -461,6 +462,7 @@
         </uni-section>
         <uni-section
           title="流式速度"
+          titleFontSize="16"
           subTitle="越小越慢,越大越快。 注: 过快反而缺失流式感"
           class="pl-3 pr-3 block"
         >
@@ -477,6 +479,7 @@
         </uni-section>
         <uni-section
           title="本地缓存状态"
+          titleFontSize="16"
           subTitle="信息存在本地storage中，请注意缓存状态，缓存占满后将无法使用，请及时清理数据"
           class="pl-3 pr-3 block"
         >
@@ -493,6 +496,7 @@
         </uni-section>
         <uni-section
           :title="_child.uTitle || 'AI模型'"
+          titleFontSize="16"
           :subTitle="_child.uDesc || '模型为免费开源文本生成模型'"
           label="AI模型选择"
           class="pl-3 pr-3 block"
@@ -505,7 +509,12 @@
             class="llm-select"
           ></uni-data-select>
         </uni-section>
-        <uni-section title="刷新模型" subTitle="更新本地缓存模型" class="pl-3 pr-3 block">
+        <uni-section
+          title="刷新模型"
+          titleFontSize="16"
+          subTitle="更新本地缓存模型"
+          class="pl-3 pr-3 block"
+        >
           <template v-slot:right>
             <view @click.stop class="flex">
               <button
@@ -520,14 +529,24 @@
             </view>
           </template>
         </uni-section>
-        <uni-section title="新建聊天" subTitle="打开一个新的聊天" class="pl-3 pr-3 block">
+        <uni-section
+          title="新建聊天"
+          titleFontSize="16"
+          subTitle="打开一个新的聊天"
+          class="pl-3 pr-3 block"
+        >
           <uni-card title="新的聊天" extra="共0条对话" margin="0">
             <view class="text-center" @click.stop="openNewChat">
               <uni-icons type="plusempty" size="30" color="#888888"></uni-icons>
             </view>
           </uni-card>
         </uni-section>
-        <uni-section title="历史聊天" subTitle="创建的聊天历史" class="pl-3 pr-3 block">
+        <uni-section
+          title="历史聊天"
+          titleFontSize="16"
+          subTitle="创建的聊天历史"
+          class="pl-3 pr-3 block"
+        >
           <template v-slot:right>
             <view class="max-w-32">
               <text style="font-size: 20rpx; color: #dd524d">
@@ -547,7 +566,7 @@
             :style="{ marginBottom: '16px' }"
           >
             <view class="block">
-              <text line-clamp="5" style="font-size: 24rpx" class="ellipsis-5">
+              <text line-clamp="4" style="font-size: 24rpx" class="ellipsis-4">
                 {{ item.collectionSubTitle ?? 'null' }}
               </text>
             </view>
@@ -689,9 +708,9 @@ const aiPromptsCutIn = ref(false) // 提示词开关
 const _aiSetOutputConf = {
   temperature: 0.5,
   top_p: 1,
-  top_k: 1,
+  top_k: 5,
   max_tokens: 2048,
-  history_length: 4,
+  history_length: 6,
 }
 
 const aiSetOutputConf = ref<AiInfo['outputConf']>({ ..._aiSetOutputConf }) // ai输出配置
@@ -779,7 +798,7 @@ watch(
 // 监听 元素 变化
 watch(
   () => collection.value.chatList.length,
-  () => nextTick(updateIntersectionObserver),
+  () => updateIntersectionObserver(),
 )
 
 function segmentedChange({ currentIndex }) {
@@ -872,8 +891,8 @@ function addPrompt() {
   if (aiPrompts.value.length >= 9)
     return uni.showToast({
       icon: 'none',
-      title: '无法再添加提示词',
-      duration: 1500,
+      title: '无法再添加提示词！！！',
+      duration: 1300,
     })
   aiPrompts.value.push({ role: 'system', content: '', chatId: generateUniqueId() })
   setAiPrompts()
@@ -926,7 +945,7 @@ function openNewChat() {
     return uni.showToast({
       icon: 'none',
       title: '无法再新增聊天，请先删除旧的聊天',
-      duration: 1500,
+      duration: 2000,
     })
   collection.value = createChatCollection()
   aiStore.unshiftAiCollection(collection.value)
@@ -946,17 +965,18 @@ function addPin({ chatId, content, role }, itIdx) {
   if (aiPrompts.value.length >= 9)
     return uni.showToast({
       icon: 'none',
-      title: '无法再继续添加提示词',
-      duration: 1500,
+      title: '无法再添加提示词！！！',
+      duration: 1300,
     })
   aiPrompts.value.push({ role, content, chatId })
   collection.value.chatList[itIdx].isPin = true
   setAiPrompts()
-  const tips = `已添加到预设提示词${aiPromptsCutIn.value ? '' : '，当前未启用提示词，开启提示词方可生效'}`
+  const tips = `已添加提示词${aiPromptsCutIn.value ? '' : '，当前未启用提示词'}`
+  const duration = aiPromptsCutIn.value ? 1300 : 2000
   return uni.showToast({
     icon: 'none',
     title: tips,
-    duration: 2000,
+    duration,
   })
 }
 
@@ -998,7 +1018,6 @@ function abortChat() {
     event: 'abort',
   })
   // #endif
-  nextTick(updateIntersectionObserver)
 }
 
 function trashChat({ chatId }) {
@@ -1523,6 +1542,13 @@ async function doSendAi(val) {
     })
   }
 
+  if (aiStore.localStorageInfo.percent >= 98) {
+    return await uni.showToast({
+      title: '本地缓存已满，无法使用',
+      icon: 'none',
+    })
+  }
+
   // 使用异步函数需要确保在组件实例中使用
   if (sendDisabled.value) {
     return await uni.showToast({
@@ -1800,7 +1826,9 @@ function setHeight() {
 // 更新 IntersectionObserver
 function updateIntersectionObserver() {
   if (listContainerObserver) {
-    listContainerObserver.disconnect()
+    offObserver()
+    onObserver()
+    return
   }
   listContainerObserver = new IntersectionObserver(
     (entries) => {
@@ -1827,14 +1855,15 @@ function updateIntersectionObserver() {
       }
     })
   })
+  // 容器大小发生变化时触发
+  console.log('容器大小发生变化')
 }
 
 function onObserver() {
+  if (resizeObserver) return // 避免重复监听
   // 创建 ResizeObserver 实例
   resizeObserver = new ResizeObserver(() => {
-    // 容器大小发生变化时触发
-    console.log('容器大小发生变化')
-    nextTick(updateIntersectionObserver)
+    updateIntersectionObserver()
   })
   // 监听容器高度变化
   resizeObserver.observe(listContainer.value.$el)
@@ -1846,7 +1875,10 @@ function offObserver() {
     listContainerObserver = null
   }
   // 停止监听容器高度变化
-  if (resizeObserver) resizeObserver.disconnect()
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
 }
 
 onLoad((option) => {
@@ -1876,8 +1908,6 @@ onMounted(async () => {
   await initChatList()
 
   setHeight()
-
-  onObserver()
 })
 
 onShow(() => proxy.$pageScroll.stop())

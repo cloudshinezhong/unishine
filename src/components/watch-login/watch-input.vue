@@ -19,7 +19,7 @@
       @longtap="handleLongTap"
       @touchcancel="handleTouchCancel"
       @touchend="handleTouchEnd"
-      @touchmove="handleTouchMove"
+      @touchmove.stop.passive="handleTouchMove"
       @touchstart="handleTouchStart"
     />
     <!-- 是否可见密码 -->

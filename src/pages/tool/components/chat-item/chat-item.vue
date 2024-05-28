@@ -6,7 +6,7 @@
 </route>
 <!-- 聊天item -->
 <template>
-  <view class="chat-item" @touchmove.stop.prevent>
+  <view class="chat-item" @touchmove.stop.prevent.passive>
     <view :class="{ 'chat-container': true, 'chat-location-me': dtoItem.isMe }">
       <view :class="{ 'chat-content-container': true, 'chat-content-container-me': dtoItem.isMe }">
         <view
@@ -73,6 +73,8 @@
               v-if="nodes && nodes.length"
               space="nbsp"
               :nodes="nodes"
+              selectable
+              preview
               @itemclick="trOnclick"
             ></rich-text>
             <!-- #endif -->
@@ -131,7 +133,6 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
-import { debounce } from '@/utils'
 // 引入markdown-it库
 import MarkdownIt from '@/lib/markdown-it.min'
 // hljs是由 Highlight.js 经兼容性修改后的文件，请勿直接升级。否则会造成uni-app-vue3-Android下有兼容问题
@@ -163,19 +164,7 @@ const markdownIt = MarkdownIt({
       preCode = markdownIt.utils.escapeHtml(str)
     }
     let html = preCode
-    // 以换行进行分割
-    // const lines = preCode.split(/\n/).slice(0, -1)
-    // // 添加自定义行号
-    // let html = lines
-    //   .map((item, index) => {
-    //     // 去掉空行
-    //     if (item === '') {
-    //       return ''
-    //     }
-    //     return '<li><span class="line-num" data-line="' + (index + 1) + '"></span>' + item + '</li>'
-    //   })
-    //   .join('')
-    html = '<ol style="padding: 0px 28px;">' + html + '</ol>'
+    html = '<div style="padding: 0 2px;">' + html + '</div>'
     // 代码复制功能
     codeDataList.value.push(str)
     let htmlCode = `<div style="background:#0d1117;margin-top: 5px;color: #888;padding:5px 0;border-radius: 5px;">`
@@ -349,8 +338,8 @@ const nodes = computed(() => {
 
 function trOnclick(e) {
   const { attrs } = e.detail.node
-  const { 'code-data-index': codeDataIndex, class: className } = attrs
-  if (className.includes('copy-btn')) {
+  const { 'code-data-index': codeDataIndex, class: className, href } = attrs
+  if (className && className.includes('copy-btn')) {
     uni.setClipboardData({
       data: codeDataList.value[codeDataIndex],
       showToast: false,
@@ -361,6 +350,18 @@ function trOnclick(e) {
         })
       },
     })
+  } else if (href)
+    // 是否跳转
+    uni.showModal({
+      content: `是否跳转至${href}该网页？`,
+      success: (res) => {
+        if (res.confirm) {
+          window.location.href = href
+        }
+      },
+    })
+  else {
+    return false
   }
 }
 </script>
@@ -578,6 +579,12 @@ function trOnclick(e) {
 }
 
 /* 富文本框样式 */
+/* 假设你想让链接文本可选 */
+.rich-text-box {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 /* #ifndef APP-NVUE */
 .rich-text-box {
   max-width: 100%;

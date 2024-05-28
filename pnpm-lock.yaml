@@ -59,9 +59,6 @@ dependencies:
   dayjs:
     specifier: 1.11.10
     version: 1.11.10
-  default-passive-events:
-    specifier: ^2.0.0
-    version: 2.0.0
   file-saver:
     specifier: ^2.0.5
     version: 2.0.5
@@ -6367,10 +6364,6 @@ packages:
     dependencies:
       execa: 5.1.1
     dev: true
-
-  /default-passive-events@2.0.0:
-    resolution: {integrity: sha512-eMtt76GpDVngZQ3ocgvRcNCklUMwID1PaNbCNxfpDXuiOXttSh0HzBbda1HU9SIUsDc02vb7g9+3I5tlqe/qMQ==}
-    dev: false
 
   /define-data-property@1.1.4:
     resolution: {integrity: sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A==}

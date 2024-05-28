@@ -4,8 +4,6 @@ import store from './store'
 import { routeInterceptor, requestInterceptor } from './interceptors'
 import globalScrollControl from './hooks/globalScrollControl' // 替换为你的插件路
 import i18n from './locale/index'
-// Chrome51 版本以后，Chrome 增加了新的事件捕获机制－Passive Event Listeners，导致触发了告警。
-import 'default-passive-events'
 import 'virtual:svg-icons-register'
 import 'virtual:uno.css'
 import '@/style/index.scss'
