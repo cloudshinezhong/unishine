@@ -64,10 +64,56 @@
         </uni-collapse-item>
       </uni-collapse>
     </view>
+<!--    <view class="flex fixed left-0 w-full h-full" :style="{ top: toTopHeight }" ref="listContainer">-->
+<!--      <virtual-list-->
+<!--        :listData="collection.chatList"-->
+<!--        :estimatedItemSize="20"-->
+<!--        :bufferScale="0.2"-->
+<!--        :height="msgListHeight + 'px'"-->
+<!--        :style="{-->
+<!--          maxHeight: initialWindowHeight + imPlaceholderheight + 'px',-->
+<!--        }"-->
+<!--        class="w-full"-->
+<!--      >-->
+<!--        <template v-slot="slotData">-->
+<!--          <view-->
+<!--            class="cc-list-item"-->
+<!--            v-for="(item, index) in slotData.data"-->
+<!--            :key="item.chatId"-->
+<!--            :id="item.chatId"-->
+<!--          >-->
+<!--            <chat-item-->
+<!--              :item="item"-->
+<!--              :key="index"-->
+<!--              :show-cursor="false"-->
+<!--              @compose="composeChat"-->
+<!--              @refresh="refreshChat"-->
+<!--              @trash="trashChat"-->
+<!--              @copy="copyChat"-->
+<!--              @addPin="(...args) => addPin(...args, index)"-->
+<!--              @removePin="removePin"-->
+<!--              :show-btn="!!item.showBtn"-->
+<!--              ref="chatItemElement"-->
+<!--            ></chat-item>-->
+<!--          </view>-->
+<!--          &lt;!&ndash; 底部会话条数 &ndash;&gt;-->
+<!--          <view class="flex center">-->
+<!--            <view-->
+<!--              :class="Boolean(collection.chatList.length && !sendDisabled) ? 'fade-in' : 'fade-out'"-->
+<!--              v-show="Boolean(collection.chatList.length && !sendDisabled)"-->
+<!--            >-->
+<!--              <text style="font-size: 22rpx; color: #aaaaaa">-->
+<!--                共{{ collection.chatList.length }}条对话-->
+<!--              </text>-->
+<!--            </view>-->
+<!--          </view>-->
+<!--        </template>-->
+<!--      </virtual-list>-->
+<!--    </view>-->
     <view
       class="flex fixed left-0 w-full h-full"
       :style="{ top: toTopHeight }"
-      @touchstart.stop.passive="debounce(proxy.$pageScroll.stop(), 1000)"
+      @touchstart="debounce(proxy.$pageScroll.stop(), 1000)"
       ref="listContainer"
     >
       <scroll-view
@@ -625,6 +671,7 @@ import {
 import { useAiStore } from '@/store/AI'
 import { useMailUserStore } from '@/store/mailuser'
 import ChatItem from '@/pages/tool/components/chat-item/chat-item.vue'
+import VirtualList from '@/components/virtualList/virtualList.vue'
 const { proxy } = getCurrentInstance()
 
 const aiStore = useAiStore()
@@ -645,6 +692,8 @@ const popupIsShow = ref(false) // popup组件有没展示
 const bottomPopup = ref(null) // 底部popup组件
 
 const inputBar = ref(null) // chatInputBar组件
+
+const useVirtualList = ref(null) // 虚拟列表组件
 
 const listContainer = ref(null) // chatitem列表父组件
 const chatItemElement = ref([]) // 使用数组存储 chat-item 的 ref
@@ -902,7 +951,7 @@ function delPrompt(id) {
   const idx = aiPrompts.value.findIndex((i) => i?.chatId === id)
   const itIdx = collection.value.chatList.findIndex((i) => i.chatId === id)
   aiPrompts.value.splice(idx, 1)
-  collection.value.chatList[itIdx].isPin = false
+  if (itIdx >= 0) collection.value.chatList[itIdx].isPin = false
   setAiPrompts()
 }
 
@@ -1307,7 +1356,7 @@ const showLast = debounce(() => {
   // #endif
   scrollIntoView.value = 'list-last-item'
   nextTick(() => (scrollIntoView.value = ''))
-}, 30)
+}, 50)
 
 async function paGetAiModels(action: 'init' | 'refresh' = 'init') {
   switch (parents.value.key) {
@@ -1842,7 +1891,7 @@ function updateIntersectionObserver() {
     {
       // 获取 ref 对象对应的 DOM 节点
       root: listContainer.value ? listContainer.value.$el : null,
-      threshold: 0.8, // 可以根据需要动态计算
+      threshold: 0.6, // 可以根据需要动态计算
     },
   )
   // 重新监听所有 chat-item 元素

@@ -6,7 +6,7 @@
 </route>
 <!-- 聊天item -->
 <template>
-  <view class="chat-item" @touchmove.stop.prevent.passive>
+  <view class="chat-item" @touchmove.stop.passive>
     <view :class="{ 'chat-container': true, 'chat-location-me': dtoItem.isMe }">
       <view :class="{ 'chat-content-container': true, 'chat-content-container-me': dtoItem.isMe }">
         <view

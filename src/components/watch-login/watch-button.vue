@@ -14,7 +14,7 @@
       @opensetting="handleOpenSetting"
       @touchcancel="handleTouchCancel"
       @touchend="handleTouchEnd"
-      @touchmove.stop.passive="handleTouchMove"
+      @touchmove="handleTouchMove"
       @touchstart="handleTouchStart"
     >
       <view :class="_rotate ? 'rotate_loop' : ''">
