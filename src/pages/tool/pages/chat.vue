@@ -1347,7 +1347,7 @@ function updateLastMsg(dck) {
   showLast()
 }
 
-const showLast = debounce(() => {
+const showLast = () => {
   // #ifndef H5
   uni.pageScrollTo({
     scrollTop: initialWindowHeight.value,
@@ -1355,8 +1355,10 @@ const showLast = debounce(() => {
   })
   // #endif
   scrollIntoView.value = 'list-last-item'
-  nextTick(() => (scrollIntoView.value = ''))
-}, 50)
+  setTimeout(() => {
+    scrollIntoView.value = '' // 重置 scrollIntoView
+  }, 300)
+}
 
 async function paGetAiModels(action: 'init' | 'refresh' = 'init') {
   switch (parents.value.key) {
