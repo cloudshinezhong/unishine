@@ -176,6 +176,8 @@ export default {
   /*height: 42rpx;*/
   width: 80%;
   line-height: 24px;
+  max-height: 88px;
+  overflow-y: auto;
 }
 .chat-input-send {
   background-color: #007aff;

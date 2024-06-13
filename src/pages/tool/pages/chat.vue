@@ -754,7 +754,7 @@ const initialWindowHeight = ref(0) // 屏幕原始高度
 
 const toTopHeight = ref('') // 内容距离顶部高度
 
-const inputBarHeight = ref(20) // 底部输入框高度，会autoHeight，初始20
+const inputBarHeight = ref(60) // 底部输入框高度，会autoHeight，初始60
 
 const parents = ref({
   title: '',
@@ -785,7 +785,7 @@ const msgListLastPadding = computed(() => {
 // 计算属性
 const msgListHeight = computed(() => {
   // h-11是2.75rem，48px左右，60是底部inputbar高度, 22px是提示词未展开高度
-  return initialWindowHeight.value - (60 + 48 + (aiPromptsCutIn.value ? 20 : 0))
+  return initialWindowHeight.value - (inputBarHeight.value + 48 + (aiPromptsCutIn.value ? 20 : 0))
 })
 
 // 最后一条消息
@@ -863,10 +863,13 @@ function openChatSetting() {
 
 function innerLeftClickHandle() {}
 
-function inputLineChange(e) {
-  const { height } = e.detail
-  inputBarHeight.value = height
-  setScrollHeight()
+function inputLineChange() {
+  setTimeout(() => {
+    nextTick(() => {
+      inputBarHeight.value = inputBar.value.$el.scrollHeight
+    })
+    setScrollHeight()
+  }, 100)
 }
 
 function setScrollHeight() {
@@ -1852,20 +1855,6 @@ async function handleTask(queryStream) {
     })
 }
 
-function setHeight() {
-  // #ifdef MP
-  // h-11是2.75rem，48px左右，100px的是提示词栏的高度，标题栏18px+4pxpadding
-  toTopHeight.value =
-    systemInfo.value.safeAreaInsets.top + (aiPromptsCutIn.value ? 20 : 0) + 47 + 'px'
-  systemInfo.value.windowHeight -= systemInfo.value.safeAreaInsets.bottom + inputBarHeight.value
-  // #endif
-
-  // #ifndef MP
-  toTopHeight.value = (aiPromptsCutIn.value ? 20 : 0) + 47 + 'px'
-  systemInfo.value.windowHeight -= inputBarHeight.value
-  // #endif
-}
-
 // 更新 IntersectionObserver
 function updateIntersectionObserver() {
   if (listContainerObserver) {
@@ -1949,8 +1938,6 @@ onMounted(async () => {
   })
   // #endif
   await initChatList()
-
-  setHeight()
 })
 
 onShow(() => proxy.$pageScroll.stop())

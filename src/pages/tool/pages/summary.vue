@@ -262,7 +262,7 @@ const msgListLastPadding = computed(() => {
 // 计算属性
 const msgListHeight = computed(() => {
   // h-11是2.75rem，48px左右，60是底部inputbar高度
-  return initialWindowHeight.value - (60 + 48)
+  return initialWindowHeight.value - (inputBarHeight.value + 48)
 })
 
 function segmentedChange({ currentIndex }) {
@@ -281,12 +281,6 @@ function inputBlur() {
 
 function onInputValueChange(value) {
   sendValue.value = value
-}
-
-function inputLineChange(e) {
-  const { height } = e.detail
-  inputBarHeight.value = height
-  setScrollHeight()
 }
 
 async function initSummaryList() {
@@ -312,6 +306,15 @@ async function openNewSummary() {
       withContent: '',
     },
   ]
+}
+
+function inputLineChange() {
+  setTimeout(() => {
+    nextTick(() => {
+      inputBarHeight.value = inputBar.value.$el.scrollHeight
+    })
+    setScrollHeight()
+  }, 100)
 }
 
 function setScrollHeight() {
@@ -449,19 +452,6 @@ async function doSendAi(val) {
   }
 }
 
-function setHeight() {
-  // #ifdef MP
-  // h-11是2.75rem，48px左右，100px的是提示词栏的高度，标题栏18px+4pxpadding
-  toTopHeight.value = systemInfo.value.safeAreaInsets.top + 47 + 'px'
-  systemInfo.value.windowHeight -= systemInfo.value.safeAreaInsets.bottom + inputBarHeight.value
-  // #endif
-
-  // #ifndef MP
-  toTopHeight.value = 47 + 'px'
-  systemInfo.value.windowHeight -= inputBarHeight.value
-  // #endif
-}
-
 onLoad((option) => {
   try {
     parents.value = JSON.parse(decodeURIComponent(option.parents))
@@ -487,8 +477,6 @@ onMounted(async () => {
   })
   // #endif
   await initSummaryList()
-
-  setHeight()
 })
 
 onShow(() => proxy.$pageScroll.stop())
