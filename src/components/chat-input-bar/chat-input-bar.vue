@@ -9,6 +9,7 @@
         <uni-icons type="paperclip" size="24" color="rgb(192, 196, 204)"></uni-icons>
       </view>
       <textarea
+        @touchmove.stop
         placeholder="请输入内容"
         v-model="msg"
         :auto-height="true"
