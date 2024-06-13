@@ -20,9 +20,9 @@
         :square="false"
         @change="menuClickHandle(item.key, $event)"
       >
-        <uni-grid-item v-for="it in item.menu" :key="it.key">
+        <uni-grid-item v-for="(it, index) in item.menu" :key="it.key" :index="index">
           <view class="grid-item-box">
-            <image class="image" :src="it.icon" mode="aspectFill" />
+            <image class="w-10 h-10" :src="it.icon" mode="aspectFill" />
             <text class="text">{{ it.name }}</text>
             <view v-if="item.badge" class="grid-dot">
               <uni-badge :text="it.badge" :type="it.type" />

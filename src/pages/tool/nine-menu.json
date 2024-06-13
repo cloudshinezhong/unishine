@@ -11,7 +11,14 @@
         "key": "chat",
         "uTitle": "Cloudflare AI模型",
         "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)，中文建议用千问(qwen)系列",
-        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
+      },
+      {
+        "name": "文本总结",
+        "key": "summary",
+        "uTitle": "Cloudflare AI模型",
+        "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)",
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718288934/unishine/akmwjejxlfhzhrvdayah.png"
       }
     ]
   },
@@ -43,7 +50,7 @@
         "key": "chat",
         "uTitle": "Google AI模型",
         "uDesc": "模型为Google提供的gemini系列(暂不包含图文，后期开放)，该系列暂时免费(每分钟60次请求)，属于较热门的AI系列",
-        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
       }
     ]
   },
@@ -59,7 +66,7 @@
         "key": "chat",
         "uTitle": "Groq AI模型",
         "uDesc": "模型为Groq提供的llama系列等，该系列暂时免费(每分钟30次请求)，属于较热门的AI系列",
-        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1714917281/unishine/ur8nmaanvdiqtkpvm7ka.png"
+        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
       }
     ]
   }

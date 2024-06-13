@@ -58,6 +58,19 @@ export const conversationAi = (
   })
 }
 
+export const summaryAi = (content: string, name: string, uid: string, outputConf?: object) => {
+  return http({
+    url: `/ai/aiSummary`,
+    method: 'POST',
+    data: {
+      uid,
+      name,
+      content,
+      outputConf,
+    },
+  })
+}
+
 export const cozeChat = (
   content: string,
   botId: string,

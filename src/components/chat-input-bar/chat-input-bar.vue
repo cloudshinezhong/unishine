@@ -6,7 +6,7 @@
     </view>
     <view class="chat-input-container">
       <view class="flex center pl-1 pr-1" @click="innerLeftClick" v-if="innerLeftIcon">
-        <uni-icons type="plus" size="28" color="rgb(192, 196, 204)"></uni-icons>
+        <uni-icons type="paperclip" size="24" color="rgb(192, 196, 204)"></uni-icons>
       </view>
       <textarea
         placeholder="请输入内容"

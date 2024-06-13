@@ -17,6 +17,8 @@ const aiInfoInitState = {
     top_k: 5,
     max_tokens: 2048,
     history_length: 6,
+    summary_swi: true,
+    summary_thr_len: 512,
   },
 }
 
@@ -36,6 +38,8 @@ const botInfoInitState = {
     top_k: 5,
     max_tokens: 2048,
     history_length: 6,
+    summary_swi: true,
+    summary_thr_len: 512,
   },
 }
 
@@ -54,6 +58,8 @@ const geminiInfoInitState = {
     top_k: 5,
     max_tokens: 2048,
     history_length: 6,
+    summary_swi: true,
+    summary_thr_len: 512,
   },
 }
 
@@ -72,6 +78,8 @@ const groqInfoInitState = {
     top_k: 5,
     max_tokens: 2048,
     history_length: 6,
+    summary_swi: true,
+    summary_thr_len: 512,
   },
 }
 

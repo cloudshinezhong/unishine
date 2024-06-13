@@ -7,7 +7,9 @@
   <view class="page">
     <uni-nav-bar
       left-icon="left"
+      right-icon="plus"
       @clickLeft="back"
+      @clickRight="openChatSetting"
       class="fixed w-full z-1"
       :shadow="!aiPromptsCutIn"
       :border="false"
@@ -64,52 +66,6 @@
         </uni-collapse-item>
       </uni-collapse>
     </view>
-<!--    <view class="flex fixed left-0 w-full h-full" :style="{ top: toTopHeight }" ref="listContainer">-->
-<!--      <virtual-list-->
-<!--        :listData="collection.chatList"-->
-<!--        :estimatedItemSize="20"-->
-<!--        :bufferScale="0.2"-->
-<!--        :height="msgListHeight + 'px'"-->
-<!--        :style="{-->
-<!--          maxHeight: initialWindowHeight + imPlaceholderheight + 'px',-->
-<!--        }"-->
-<!--        class="w-full"-->
-<!--      >-->
-<!--        <template v-slot="slotData">-->
-<!--          <view-->
-<!--            class="cc-list-item"-->
-<!--            v-for="(item, index) in slotData.data"-->
-<!--            :key="item.chatId"-->
-<!--            :id="item.chatId"-->
-<!--          >-->
-<!--            <chat-item-->
-<!--              :item="item"-->
-<!--              :key="index"-->
-<!--              :show-cursor="false"-->
-<!--              @compose="composeChat"-->
-<!--              @refresh="refreshChat"-->
-<!--              @trash="trashChat"-->
-<!--              @copy="copyChat"-->
-<!--              @addPin="(...args) => addPin(...args, index)"-->
-<!--              @removePin="removePin"-->
-<!--              :show-btn="!!item.showBtn"-->
-<!--              ref="chatItemElement"-->
-<!--            ></chat-item>-->
-<!--          </view>-->
-<!--          &lt;!&ndash; 底部会话条数 &ndash;&gt;-->
-<!--          <view class="flex center">-->
-<!--            <view-->
-<!--              :class="Boolean(collection.chatList.length && !sendDisabled) ? 'fade-in' : 'fade-out'"-->
-<!--              v-show="Boolean(collection.chatList.length && !sendDisabled)"-->
-<!--            >-->
-<!--              <text style="font-size: 22rpx; color: #aaaaaa">-->
-<!--                共{{ collection.chatList.length }}条对话-->
-<!--              </text>-->
-<!--            </view>-->
-<!--          </view>-->
-<!--        </template>-->
-<!--      </virtual-list>-->
-<!--    </view>-->
     <view
       class="flex fixed left-0 w-full h-full"
       :style="{ top: toTopHeight }"
@@ -302,7 +258,7 @@
       <!--        :style-type="'text'"-->
       <!--        @clickItem="segmentedChange"-->
       <!--      />-->
-      <scroll-view scroll-y :style="{ maxHeight: initialWindowHeight * 0.7 + 'px' }">
+      <scroll-view scroll-y :style="{ maxHeight: initialWindowHeight * 0.72 + 'px' }">
         <view
           v-show="segmentedCurrent === 0"
           class="flex flex-col box-border content"
@@ -454,6 +410,33 @@
                   :max="32"
                   @change="historyLengthChange"
                   show-value
+                  step="1"
+                />
+              </view>
+            </uni-section>
+            <uni-section
+              title="历史消息压缩"
+              subTitle="对历史消息总结摘要，精简历史消息，超过设置的长度将进行压缩"
+              class="pl-3 pr-3 block"
+            >
+              <template v-slot:right>
+                <checkbox-group @change="summarySwiChange" class="pl-2">
+                  <label>
+                    <checkbox value="summary_swi" :checked="aiSetOutputConf.summary_swi" />
+                  </label>
+                </checkbox-group>
+              </template>
+              <view
+                class="pl-3 pr-3"
+                :style="{ opacity: !aiSetOutputConf.summary_swi ? '0.3' : '1' }"
+              >
+                <slider
+                  :disabled="!aiSetOutputConf.summary_swi"
+                  :value="aiSetOutputConf.summary_thr_len"
+                  :min="128"
+                  :max="2048"
+                  show-value
+                  @change="summaryThrLenChange"
                   step="1"
                 />
               </view>
@@ -671,7 +654,6 @@ import {
 import { useAiStore } from '@/store/AI'
 import { useMailUserStore } from '@/store/mailuser'
 import ChatItem from '@/pages/tool/components/chat-item/chat-item.vue'
-import VirtualList from '@/components/virtualList/virtualList.vue'
 const { proxy } = getCurrentInstance()
 
 const aiStore = useAiStore()
@@ -692,8 +674,6 @@ const popupIsShow = ref(false) // popup组件有没展示
 const bottomPopup = ref(null) // 底部popup组件
 
 const inputBar = ref(null) // chatInputBar组件
-
-const useVirtualList = ref(null) // 虚拟列表组件
 
 const listContainer = ref(null) // chatitem列表父组件
 const chatItemElement = ref([]) // 使用数组存储 chat-item 的 ref
@@ -760,6 +740,8 @@ const _aiSetOutputConf = {
   top_k: 5,
   max_tokens: 2048,
   history_length: 6,
+  summary_swi: true,
+  summary_thr_len: 512,
 }
 
 const aiSetOutputConf = ref<AiInfo['outputConf']>({ ..._aiSetOutputConf }) // ai输出配置
@@ -788,7 +770,7 @@ const _child = ref({
   uDesc: '',
 }) // 当前子菜单
 
-const segmentedS = ref(['基本设置', '会话设置'])
+const segmentedS = ref(['通用设置', '会话设置'])
 const segmentedCurrent = ref(0)
 
 // 计算属性
@@ -868,7 +850,7 @@ function onInputValueChange(value) {
   sendValue.value = value
 }
 
-function innerLeftClickHandle() {
+function openChatSetting() {
   if (sendDisabled.value) {
     return uni.showToast({
       title: '繁忙中，请稍后...',
@@ -878,6 +860,8 @@ function innerLeftClickHandle() {
   // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
   bottomPopup.value.open('bottom')
 }
+
+function innerLeftClickHandle() {}
 
 function inputLineChange(e) {
   const { height } = e.detail
@@ -1120,12 +1104,22 @@ function topKChange(val) {
 
 function maxTokensChange({ detail: { value } }) {
   aiSetOutputConf.value.max_tokens = value
-  debounce(aiSetOutputConfChange, 100)
+  debounce(aiSetOutputConfChange, 500)
 }
 
 function historyLengthChange({ detail: { value } }) {
   aiSetOutputConf.value.history_length = value
-  debounce(aiSetOutputConfChange, 100)
+  debounce(aiSetOutputConfChange, 500)
+}
+
+function summarySwiChange({ detail: { value } }) {
+  aiSetOutputConf.value.summary_swi = Boolean(value.length)
+  aiSetOutputConfChange()
+}
+
+function summaryThrLenChange({ detail: { value } }) {
+  aiSetOutputConf.value.summary_thr_len = value
+  debounce(aiSetOutputConfChange, 500)
 }
 
 function aiSetOutputConfChange() {

@@ -81,6 +81,8 @@ type AiInfo = {
     top_k: number
     max_tokens: number
     history_length: number
+    summary_swi: boolean
+    summary_thr_len: number
   }
 }
 
@@ -107,6 +109,8 @@ type BotInfo = {
     top_k: number
     max_tokens: number
     history_length: number
+    summary_swi: boolean
+    summary_thr_len: number
   }
 }
 
@@ -122,6 +126,27 @@ type AiChat = {
   chatId: number | string
   isPin: boolean
 
+  showBtn: boolean // 操作按钮是否展示
+  withContent: string // 内容相关，例如违法相关条例，涉及一些违规等提示或停止原因
+  // 这里是谷歌gemini的文档所示的FINISH_REASON
+  // FINISH_REASON_UNSPECIFIED	默认值。此值未使用。
+  // STOP	模型的自然停靠点或提供的停靠站。
+  // MAX_TOKENS	已达到请求中指定的令牌数量上限。
+  // SAFETY	出于安全原因，举报了候选人的内容。
+  // RECITATION	该候选人的内容因背书原因被举报。
+  // OTHER	原因未知。
+}
+
+type AiSummary = {
+  time: number
+  icon: string
+  name: string
+  content: string
+  isMe: boolean
+  role: string
+  // 0 加载中 1加载完成 -1生成出错 2持续输出 -2请求错误
+  status: 0 | 1 | -1 | 2 | -2
+  chatId: number | string
   showBtn: boolean // 操作按钮是否展示
   withContent: string // 内容相关，例如违法相关条例，涉及一些违规等提示或停止原因
   // 这里是谷歌gemini的文档所示的FINISH_REASON
