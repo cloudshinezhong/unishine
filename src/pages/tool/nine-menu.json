@@ -13,13 +13,13 @@
         "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)，中文建议用千问(qwen)系列",
         "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
       },
-      {
-        "name": "文本总结",
-        "key": "summary",
-        "uTitle": "Cloudflare AI模型",
-        "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)",
-        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718288934/unishine/akmwjejxlfhzhrvdayah.png"
-      }
+//      {
+//        "name": "文本总结",
+//        "key": "summary",
+//        "uTitle": "Cloudflare AI模型",
+//        "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)",
+//        "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718288934/unishine/akmwjejxlfhzhrvdayah.png"
+//      }
     ]
   },
   //  {
