@@ -59,11 +59,8 @@
         </view>
         <view>
           <text font-size="3" word-spacing="break">
-            github地址(未开源)：
-            <uni-link
-              href="https://github.com/cloudshinezhong/unishine"
-              text="https://github.com/cloudshinezhong/unishine"
-            ></uni-link>
+            github地址：
+            <uni-link href="https://github.com/cloudshinezhong/unishine" text="点此跳转"></uni-link>
           </text>
         </view>
         <view>
@@ -74,14 +71,14 @@
         </view>
         <view>
           <text font-size="3">
-            关于：项目为实用AI功能集，相关功能还在完善，未开源原因， 1.项目还不完善，
+            关于：项目为实用AI功能集，相关功能还在完善，无商业化计划(完全免费)，勿薅羊毛，勿商用，项目后端未开源，未开源原因，1.项目还不完善，
             2.项目可能会被换皮商用，3.其他原因。项目当前部署在边缘服务节点，AI服务在某些地区不可用，中转了一层代理导致访问较缓慢，望谅解。
             提需求或bug请到github提issue，或是邮件联系作者。
           </text>
         </view>
         <view>
           <text font-size="3">
-            注意：由于项目部署为云部署(为海外云服务厂商)，个人项目无资金支持，无法去使用付费套餐内容，免费套餐存在一些限制，例如宽带，请求并发数，数据库，缓存，对象存储等。望酌情使用，可联系作者赞助，以更好支持项目。
+            注意：由于项目部署为云部署(为海外云服务厂商)，个人项目无资金支持付费套餐内容，免费套餐存在一些限制，例如宽带，请求并发数，数据库，缓存，对象存储等。望酌情使用，可联系作者赞助，以更好支持项目。
           </text>
         </view>
         <view class="mb-10"></view>
