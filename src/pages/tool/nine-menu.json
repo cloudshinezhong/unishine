@@ -10,9 +10,10 @@
         "name": "文本生成",
         "key": "chat",
         "uTitle": "Cloudflare AI模型",
-        "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)，中文建议用千问(qwen)系列",
+        "uDesc": "模型由Cloudflare提供的免费开源模型(所有模型每天一共可调用10k Neurons，不暴力使用足够)，中文建议用千问(qwen)系列。",
+        "uTips" : "注：模型名中有表示版本号x.x，例如qwen1.5或v1.0，有表示参数量8b或70b等，版本号越高代表越新，参数量越大代表越强",
         "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
-      },
+      }
 //      {
 //        "name": "文本总结",
 //        "key": "summary",
@@ -50,13 +51,14 @@
         "key": "chat",
         "uTitle": "Google AI模型",
         "uDesc": "模型为Google提供的gemini系列(暂不包含图文，后期开放)，该系列暂时免费(每分钟60次请求)，属于较热门的AI系列",
+        "uTips" : "注：模型名中有表示版本号x.x，例如gemini-1.0(版本越高代表越新)，有表示版本类型pro(专业版)，flash(快速版)，有表示版本小分类001(最新稳定版)，latest(最新版)。",
         "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
       }
     ]
   },
   {
     "title": "Groq AI",
-    "subTitle": "Groq Cloud平台提供的免费AI",
+    "subTitle": "Groq Cloud平台提供的免费AI服务",
     "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1716062931/unishine/eiyigjccq94z1dqe2zlh.jpg",
     "key": "GROQ_AI",
     "name": "GROQ",
@@ -66,6 +68,7 @@
         "key": "chat",
         "uTitle": "Groq AI模型",
         "uDesc": "模型为Groq提供的llama系列等，该系列暂时免费(每分钟30次请求)，属于较热门的AI系列",
+        "uTips" : "注：模型名中有表示版本号x.x，例如qwen1.5或v1.0，有表示参数量8b或70b等，版本号越高代表越新，参数量越大代表越强",
         "icon": "https://res.cloudinary.com/dqasscgat/image/upload/v1718289519/unishine/abrv8ewyvqrg8vgdgcmm.png"
       }
     ]
