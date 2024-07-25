@@ -530,7 +530,13 @@
           label="AI模型选择"
           class="pl-3 pr-3 block"
         >
-          <uni-title type="h5" :title="_child.uTips" color="#666" class="pr-2 pl-2 pb-2 pt-0"></uni-title>
+          <uni-title
+            v-if="_child.uTips"
+            type="h5"
+            :title="_child.uTips"
+            color="#666"
+            style="padding: 0 12px 12px 12px"
+          ></uni-title>
           <uni-data-select
             v-model="aiModel"
             :localdata="aiModels"

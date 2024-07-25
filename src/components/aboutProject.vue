@@ -1,7 +1,7 @@
 <template>
-  <view>
+  <view class="about-project">
     <!-- 弹窗 -->
-    <uni-popup ref="myPopup">
+    <uni-popup ref="myPopup" style="position: absolute; top: 148px">
       <view class="max-h-88 min-h-38 flex justify-center items-center">
         <view class="flex items-center flex-col" style="max-width: 92%">
           <view class="flex center w-full p-2 bg-white">
@@ -9,7 +9,9 @@
             <view class="" style="opacity: 0">
               <uni-icons type="closeempty" size="24"></uni-icons>
             </view>
-            <view class="flex-1 center font-400"><text style="font-size: 18px">关于项目</text></view>
+            <view class="flex-1 center font-400">
+              <text style="font-size: 18px">关于项目</text>
+            </view>
             <view @click.stop="() => myPopup.close()">
               <uni-icons type="closeempty" size="24"></uni-icons>
             </view>
@@ -73,8 +75,9 @@ function closePopup() {
   myPopup.value.close()
 }
 
-
 onMounted(() => {
   buildDate.value = document.getElementsByTagName('html')[0].getAttribute('build-date')
 })
 </script>
+
+<style></style>
