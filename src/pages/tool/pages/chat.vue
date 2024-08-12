@@ -845,13 +845,14 @@ function segmentedChange({ currentIndex }) {
 }
 
 function inputFocus() {
+  uni.showKeyboard()
   showLast()
 }
 
 function inputBlur() {
-  // keyboardHeight.value = 0
+  keyboardHeight.value = 0
   // 收起键盘
-  // uni.hideKeyboard()
+  uni.hideKeyboard()
 }
 
 function onInputValueChange(value) {

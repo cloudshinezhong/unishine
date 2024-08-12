@@ -9,6 +9,7 @@
         <uni-icons type="paperclip" size="24" color="rgb(192, 196, 204)"></uni-icons>
       </view>
       <textarea
+        @touchmove.stop
         placeholder="请输入内容"
         v-model="msg"
         :auto-height="true"
@@ -30,7 +31,7 @@
         :adjust-position="true"
         class="chat-input pl-1"
       />
-      <view class="flex center pl-1 pr-1" v-if="msg.length > 0" @click="clearable">
+      <view class="flex center pl-1 pr-1 ml-1" v-if="msg.length > 0" @click="clearable">
         <uni-icons type="clear" size="24" color="rgb(192, 196, 204)"></uni-icons>
       </view>
     </view>
