@@ -845,8 +845,8 @@ function segmentedChange({ currentIndex }) {
 }
 
 function inputFocus() {
-  uni.showKeyboard()
   showLast()
+  uni.showKeyboard()
 }
 
 function inputBlur() {
