@@ -1,7 +1,7 @@
 <template>
   <view class="about-project">
     <!-- 弹窗 -->
-    <uni-popup ref="myPopup" style="position: absolute; top: 148px">
+    <uni-popup ref="myPopup" style="position: absolute; top: 160px">
       <view class="max-h-88 min-h-38 flex justify-center items-center">
         <view class="flex items-center flex-col" style="max-width: 92%">
           <view class="flex center w-full p-2 bg-white">
@@ -39,7 +39,7 @@
             <view>
               <text font-size="3">
                 关于：项目为实用AI功能集，相关功能还在完善，无商业化计划(完全免费)，勿薅羊毛，勿商用，项目后端未开源，未开源原因，1.项目还不完善，
-                2.项目可能会被换皮商用，3.其他原因。项目当前部署在边缘服务节点，AI服务在某些地区不可用，中转了一层代理导致访问较缓慢，望谅解。
+                2.项目可能会被换皮商用，3.其他原因。项目当前部署在边缘服务节点，某些AI(例如:gemini)服务在某些地区不可用，中转了一层代理(多层代理)导致访问较缓慢。
                 提需求或bug请到github提issue，或是邮件联系作者。
               </text>
             </view>
