@@ -1092,9 +1092,11 @@ function copyChat({ chatId }) {
 function setDefaultOutputConf() {
   uni.showModal({
     title: '确认恢复默认配置吗？',
-    success: () => {
-      aiSetOutputConf.value = { ..._aiSetOutputConf }
-      aiSetOutputConfChange()
+    success: (res) => {
+      if (res.confirm) {
+        aiSetOutputConf.value = { ..._aiSetOutputConf }
+        aiSetOutputConfChange()
+      }
     },
   })
 }
