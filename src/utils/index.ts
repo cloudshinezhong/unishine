@@ -1,4 +1,5 @@
 import { saveAs } from 'file-saver'
+import { format as prettyFormat } from 'pretty-format'
 import pagesJson from '@/pages.json'
 import { translate as t } from '@/locale/index'
 
@@ -14,7 +15,7 @@ export const getIsTabbar = () => {
 }
 
 export function exportJson(obj: object, name: string) {
-  const jsonData = JSON.stringify(obj)
+  const jsonData = prettyFormat(obj)
   const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8' })
   saveAs(blob, `${name}.json`)
 }
