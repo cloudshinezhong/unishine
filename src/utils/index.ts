@@ -1,5 +1,4 @@
 import { saveAs } from 'file-saver'
-import { format as prettyFormat } from 'pretty-format'
 import pagesJson from '@/pages.json'
 import { translate as t } from '@/locale/index'
 
@@ -15,7 +14,7 @@ export const getIsTabbar = () => {
 }
 
 export function exportJson(obj: object, name: string) {
-  const jsonData = prettyFormat(obj)
+  const jsonData = prettyJson(obj, { indent: 4 })
   const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8' })
   saveAs(blob, `${name}.json`)
 }
@@ -52,11 +51,13 @@ export function prettyJson(json, options = {}) {
   // 合并选项
   const finalOptions = Object.assign({}, defaultOptions, options)
   // 使用 JSON.stringify 格式化 JSON 数据
-  const formattedJson = JSON.stringify(json, null, finalOptions.indent)
+  return JSON.stringify(json, null, finalOptions.indent)
   // 使用 JSON.stringify 格式化 JSON 数据，缩进为 2 个空格
+}
 
+export function prettyJsonToMarkdown(json) {
   // 将格式化后的 JSON 字符串转换为 markdown 代码块
-  return `\`\`\`json\n${formattedJson}\n\`\`\``
+  return `\`\`\`json\n${prettyJson(json)}\n\`\`\``
 }
 
 export function decodeUtf8(inputString) {

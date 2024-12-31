@@ -639,7 +639,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { back, debounce, generateUniqueId, prettyJson, decodeUtf8, exportJson } from '@/utils'
+import {back, debounce, generateUniqueId, prettyJson, decodeUtf8, exportJson, prettyJsonToMarkdown} from '@/utils'
 import {
   conversationAi,
   conversationAiStream,
@@ -1326,7 +1326,7 @@ function updateLastMsg(dck) {
     case 'error':
       if (!lastData.content && message) {
         try {
-          lastData.content = prettyJson(message)
+          lastData.content = prettyJsonToMarkdown(message)
         } catch (e) {}
         lastData.status = -2
       } else lastData.status = -1
@@ -1343,7 +1343,7 @@ function updateLastMsg(dck) {
     case 'message:err':
       if (message && !message.content) {
         try {
-          lastData.content = prettyJson(message)
+          lastData.content = prettyJsonToMarkdown(message)
         } catch (e) {}
       }
       lastData.status = -2
