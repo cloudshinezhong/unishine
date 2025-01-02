@@ -60,7 +60,7 @@
           isShowCode
           codeText="获取重置码"
           setTime="180"
-          ref="runCode"
+          ref="fInput"
           @setCode="getVerCode()"
           @runCodeStart="runCodeStart"
           @runCodeEnd="runCodeEnd"
