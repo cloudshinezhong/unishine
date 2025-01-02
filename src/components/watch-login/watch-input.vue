@@ -251,11 +251,15 @@ const getVerCodeSecond = computed(() => {
 
 /* 使用更加特定的 CSS 选择器覆盖 Edge 浏览器默认样式 */
 .vercode {
+  border-radius: 12rpx;
+  padding: 16rpx 12rpx;
+  background: rgba(165, 214, 255, 0.4);
   color: rgba(0, 0, 0, 0.7);
   font-size: 24rpx;
   /* line-height: 100rpx; */
 }
 .vercode-run {
+  background: rgba(165, 214, 255, 0.7);
   color: rgba(0, 0, 0, 0.4) !important;
 }
 .oBorder {

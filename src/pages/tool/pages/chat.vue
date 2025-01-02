@@ -1433,8 +1433,7 @@ async function setCloudflareAiInfo(action: string) {
       aiModels.value = llms.map((i) => ({ text: i, value: i }))
       const afterLength = aiModels.value.length
       aiStore.setAiInfoByKey('aiModels', aiModels.value)
-      await uni.showToast({
-        title: `模型已刷新,新增${afterLength - beforeLength}条`,
+      await uni.showToast({        title: `模型已刷新,新增${afterLength - beforeLength}条`,
         icon: 'none',
       })
     } else {

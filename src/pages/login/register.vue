@@ -229,7 +229,7 @@ function getVerCode() {
         uni.showToast({
           icon: 'none',
           position: 'bottom',
-          title: `获取验证码失败: ${res?.err_key ?? 'error'}`,
+          title: `获取验证码失败: ${res?.err_key ? res.err_key : 'error'}`,
         })
         captchaSendStatus.value = -1
         fInput.value.runCode(0)
