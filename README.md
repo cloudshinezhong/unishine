@@ -30,4 +30,6 @@
 - APP平台：`pnpm build:app`, 然后打开 `HBuilderX`，导入刚刚生成的`dist/build/app` 文件夹，选择发行 - APP云打包。
 
 
+## Shine for idea
+- idea插件版： [https://github.com/cloudshinezhong/ShineAI](https://github.com/cloudshinezhong/ShineAI)
 
